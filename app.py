@@ -407,7 +407,6 @@ df = get_draft_data()
 if 'expanded_player' not in st.session_state:
     st.session_state.expanded_player = None
 
-# Function to toggle player expansion
 def toggle_player(player_name):
     if st.session_state.expanded_player == player_name:
         st.session_state.expanded_player = None
@@ -469,67 +468,9 @@ for idx, player in df.iterrows():
     </div>
     """, unsafe_allow_html=True)
     
-    # JavaScript for the toggle functionality
-    st.markdown("""
-    <script>
-    function togglePlayer(playerName) {
-        const currentPlayer = window.parent.document.getElementById('player-state').value;
-        if (currentPlayer === playerName) {
-            window.parent.document.getElementById('player-state').value = '';
-        } else {
-            window.parent.document.getElementById('player-state').value = playerName;
-        }
-        window.parent.document.querySelector('.stApp').dispatchEvent(new Event('click'));
-    }
-    </script>
-    <input type="hidden" id="player-state" value="">
-    """, unsafe_allow_html=True)
-    
-    # Show expanded details if this player is selected
-    if is_expanded:
-        details = get_player_details(player['Name'])
-        with st.container():
-            st.markdown(f"""
-            <div class="player-details">
-                <h3>{player['Name']} - #{player['Rank']} PROSPECT</h3>
-                <p>{details['scouting']}</p>
-                
-                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-                    <div style="flex: 1; min-width: 300px;">
-                        <h4>STRENGTHS</h4>
-                        <ul style="margin-top: 8px; padding-left: 20px;">
-                            {"".join([f"<li style='margin-bottom: 6px;'>{s}</li>" for s in details['strengths']])}
-                        </ul>
-                        
-                        <h4>WEAKNESSES</h4>
-                        <ul style="margin-top: 8px; padding-left: 20px;">
-                            {"".join([f"<li style='margin-bottom: 6px;'>{s}</li>" for s in details['weaknesses']])}
-                        </ul>
-                    </div>
-                    
-                    <div style="flex: 1; min-width: 300px;">
-                        <h4>STATS</h4>
-                        <table style="width: 100%; margin-top: 8px;">
-                            {"".join([f"<tr><td style='padding: 4px 0; border-bottom: 1px solid #eee;'><b>{k}:</b></td><td style='padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;'>{v}</td></tr>" for k, v in details['stats'].items()])}
-                        </table>
-                        
-                        <h4 style='margin-top: 16px;'>PLAYER METRICS</h4>
-                        {"".join([f'''
-                        <div class="metric-container">
-                            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
-                                <span><b>{k}</b></span>
-                                <span>{v}/100</span>
-                            </div>
-                            <div style="height: 8px; width: 100%; background-color: #e1e4e8; border-radius: 4px;">
-                                <div style="height: 8px; width: {v}%; background-color: #FF6B00; border-radius: 4px;"></div>
-                            </div>
-                        </div>
-                        ''' for k, v in details['metrics'].items()])}
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
 
+    
+    
 # Add footer
 st.markdown("---")
 st.write("DATA LAST UPDATED: APRIL 2025")
