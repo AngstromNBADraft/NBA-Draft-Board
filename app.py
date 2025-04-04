@@ -258,43 +258,43 @@ def add_banner():
     }
     
     .name-cell {
-        width: 160px !important;
-        min-width: 160px !important;
-        max-width: 160px !important;
+        width: 200px !important;
+        min-width: 200px !important;
+        max-width: 200px !important;
         font-weight: 700;
         letter-spacing: 0.5px;
         box-sizing: border-box !important;
     }
     
     .pos-cell, .height-cell {
-        width: 50px !important;
-        min-width: 50px !important;
-        max-width: 50px !important;
+        width: 45px !important;
+        min-width: 45px !important;
+        max-width: 45px !important;
         text-align: center;
         color: #555;
         box-sizing: border-box !important;
     }
     
     .school-cell {
-        width: 120px !important;
-        min-width: 120px !important;
-        max-width: 120px !important;
+        width: 130px !important;
+        min-width: 130px !important;
+        max-width: 130px !important;
         text-align: center;
         box-sizing: border-box !important;
     }
     
     .age-cell {
-        width: 50px !important;
-        min-width: 50px !important;
-        max-width: 50px !important;
+        width: 45px !important;
+        min-width: 45px !important;
+        max-width: 45px !important;
         text-align: center;
         box-sizing: border-box !important;
     }
     
     .stat-cell {
-        width: 50px !important;
-        min-width: 50px !important;
-        max-width: 50px !important;
+        width: 45px !important;
+        min-width: 45px !important;
+        max-width: 45px !important;
         text-align: center;
         font-size: 13px;
         box-sizing: border-box !important;
@@ -976,30 +976,8 @@ def create_player_row(player, expanded):
                     <div class="player-rank-badge">RANK #{player['Rank']}</div>
                 </div>
             </div>
-            
-            <div class="player-details-grid">
-                <div class="player-details-section">
-                    <h3>Player Biometrics</h3>
-                    <div class="biometrics-grid">
-                        {biometrics_html}
-                    </div>
-                </div>
-                
-                <div class="player-details-section">
-                    <h3>Player Comparisons</h3>
-                    <ul class="comparisons-list">
-                        {comparisons_html}
-                    </ul>
-                </div>
-                
-                <div class="player-details-section">
-                    <h3>Position Rank (Last 5 Years)</h3>
-                    <ul class="rank-history-list">
-                        {ranks_html}
-                    </ul>
-                </div>
-            </div>
-        </div>
+         
+             
         """
         return html, expanded_html
     
