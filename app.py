@@ -3,11 +3,58 @@ import pandas as pd
 
 # Function to add banner with text logo and white NBA DRAFT text
 def add_banner():
+    # First inject the CSS styles
     st.markdown("""
     <style>
     * {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
+.main-container,
+.who-we-are,
+.big-board-title,
+.table-container,
+.table-header,
+.player-row,
+.player-details,
+.footer,
+[data-testid="stExpander"] {
+    max-width: 950px !important;
+    width: 950px !important;
+    margin-left: -20px !important;  /* Negative value to pull content left */
+    margin-right: auto !important;
+}
+
+/* Also adjust the app container */
+[data-testid="stAppViewContainer"] > div:first-child {
+    max-width: 950px !important;
+    margin-left: -20px !important;  /* Negative value to pull content left */
+    margin-right: auto !important;
+}
+
+/* Make sure the block container is also shifted left */
+.block-container {
+    max-width: 950px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: -20px !important;  /* Negative value to pull content left */
+
+}
+
+/* Adjust the main container */
+.main-container {
+    max-width: 950px !important;
+    width: 950px !important;
+    margin-left: -20px !important;  /* Negative value to pull content left */
+    margin-right: auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+
+}
+/* Make sure all elements align properly */
+.big-board-title {
+    margin-top: 20px !important;
+}
     
     .banner-container {
         position: fixed;
@@ -51,12 +98,43 @@ def add_banner():
     }
     
     [data-testid="stAppViewContainer"] {
-        margin-top: -50px;
+        margin-top: 60px;
         padding-top: 0 !important;
     }
     
     section[data-testid="stSidebar"] {
         margin-top: 60px;
+    }
+    
+    /* Main container for the entire app content */
+    .main-container {
+        max-width: 950px !important;
+        width: 950px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+    }
+    
+    /* Make sure Streamlit containers respect our width */
+    [data-testid="stAppViewContainer"] > div:first-child {
+        max-width: 950px !important;
+        margin: 0 auto !important;
+    }
+    
+    /* Override Streamlit's default layout */
+    .block-container {
+        max-width: 950px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    
+    /* Fixed width container for the entire table */
+    .table-container {
+        width: 950px !important;
+        margin: 0 auto !important;
+        overflow-x: auto !important;
+        position: relative !important;
     }
     
     /* Who We Are section styling - updated to orange */
@@ -67,6 +145,10 @@ def add_banner():
         margin: 0 0 20px 0;
         border-radius: 8px;
         line-height: normal;
+        max-width: 950px;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     .who-we-are h4 {
@@ -92,12 +174,17 @@ def add_banner():
         font-weight: 800;
         color: #0E1726;
         letter-spacing: 1px;
-        margin-bottom: 5px !important;
+        margin-bottom: 0px !important;
         text-transform: uppercase;
         border-bottom: 3px solid #FF6B00;
         padding-bottom: 8px;
+        max-width: 950px;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
     }
     
+    /* Table header styling */
     .table-header {
         display: flex;
         align-items: center;
@@ -109,6 +196,15 @@ def add_banner():
         font-size: 13px;
         padding: 10px 0;
         border-radius: 4px 4px 0 0;
+        margin-bottom: 0 !important; /* Remove margin */
+        width: 950px !important; /* Fixed width */
+        box-sizing: border-box !important;
+    }
+    
+    /* Make sure header cells align with content cells */
+    .table-header .player-cell {
+        padding: 0 8px;
+        box-sizing: border-box !important;
     }
 
     /* Make ONLY the rank header orange */
@@ -124,9 +220,13 @@ def add_banner():
     .player-row {
         display: flex;
         align-items: center;
-        padding: 8px 0;
-        border-bottom: 1px solid #eaeaea;
+        padding: 5px 0;
+        border-bottom: 2px solid #eaeaea;
         transition: all 0.2s ease;
+        height: 45px !important; /* Reduced height for more compact rows */
+        margin: 0; /* Remove any margin */
+        width: 950px !important; /* Fixed width matching header */
+
     }
     
     .player-row:hover {
@@ -143,65 +243,117 @@ def add_banner():
         text-transform: uppercase;
         font-weight: 500;
         color: #333;
+        box-sizing: border-box !important;
     }
     
+    /* Fixed column widths for perfect alignment */
     .rank-cell {
-        width: 60px;
+        width: 50px !important;
+        min-width: 50px !important;
+        max-width: 50px !important;
         text-align: center;
         font-weight: 700;
         color: #FF6B00;
+        box-sizing: border-box !important;
     }
     
     .name-cell {
-        width: 200px;  /* Wider name column */
+        width: 160px !important;
+        min-width: 160px !important;
+        max-width: 160px !important;
         font-weight: 700;
         letter-spacing: 0.5px;
+        box-sizing: border-box !important;
     }
     
     .pos-cell, .height-cell {
-        width: 60px;
+        width: 50px !important;
+        min-width: 50px !important;
+        max-width: 50px !important;
         text-align: center;
         color: #555;
+        box-sizing: border-box !important;
     }
     
     .school-cell {
-        width: 100px;
+        width: 120px !important;
+        min-width: 120px !important;
+        max-width: 120px !important;
         text-align: center;
+        box-sizing: border-box !important;
     }
     
-    .age-cell, .stat-cell {
-        width: 50px;
+    .age-cell {
+        width: 50px !important;
+        min-width: 50px !important;
+        max-width: 50px !important;
         text-align: center;
-    }
-    
-    .arrow-cell {
-        width: 60px;
-        text-align: center;
+        box-sizing: border-box !important;
     }
     
     .stat-cell {
+        width: 50px !important;
+        min-width: 50px !important;
+        max-width: 50px !important;
+        text-align: center;
         font-size: 13px;
+        box-sizing: border-box !important;
     }
     
-    .arrow-btn {
-        background: #FF6B00 !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 4px !important;
-        width: 25px !important;
-        height: 25px !important;
-        padding: 0 !important;
+    .arrow-cell {
+        width: 30px !important;
+        min-width: 30px !important;
+        max-width: 30px !important;
+        text-align: center;
+        box-sizing: border-box !important;
+    }
+    
+    /* Adjust button positioning to move it more to the right */
+    div[data-testid="stButton"] button {
+    background: #FF6B00 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    width: 40px !important;     /* Reduced from 30px */
+    height: 5px !important;    /* Reduced from 20px */
+    padding: 3px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: bold !important;
+    transition: all 0.2s ease !important;
+    margin: 2px 0 2px 0 !important;
+
+    font-size: 10px !important; /* Reduced from 12px */
+    position: absolute !important;
+    right: -15px !important;
+}
+    
+    div[data-testid="stButton"] button:hover {
+        background: #E05E00 !important;
+        transform: scale(1.1) !important;
+    }
+    
+    /* Adjust button vertical alignment */
+    [data-testid="column"]:last-child {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        font-weight: bold !important;
-        transition: all 0.2s ease !important;
-        margin: 0 auto !important;
     }
     
-    .arrow-btn:hover {
-        background: #E05E00 !important;
-        transform: scale(1.1) !important;
+    /* Hide the button label */
+    div[data-testid="stButton"] button p {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Fix column alignment and spacing */
+    [data-testid="column"]:first-child {
+        padding-right: 0 !important;
+    }
+    
+    [data-testid="column"]:last-child {
+        padding-left: 0 !important;
     }
     
     /* More compact spacing for the expanded details */
@@ -211,6 +363,15 @@ def add_banner():
         border-radius: 0 0 4px 4px;
         margin-bottom: 10px;
         border-left: 4px solid #FF6B00;
+        animation: fadeIn 0.3s ease-in-out;
+        width: 950px !important; /* Fixed width */
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; max-height: 0; }
+        to { opacity: 1; max-height: 1000px; }
     }
     
     .player-details h3 {
@@ -218,6 +379,19 @@ def add_banner():
         margin-top: 0 !important;
         border-bottom: 2px solid #FFE5D3; /* Light orange border */
         padding-bottom: 8px;
+    }
+    
+    .player-details h4 {
+        color: #2D3748;
+        margin: 12px 0 8px 0 !important;
+    }
+    
+    .player-details ul {
+        margin-top: 4px;
+    }
+    
+    .player-details li {
+        margin-bottom: 4px;
     }
     
     /* Adjust metric bars */
@@ -228,9 +402,37 @@ def add_banner():
     .metric-container div {
         height: 8px !important;
     }
+    
+    /* Hide Streamlit elements we don't want */
+    .stButton>button {
+        font-size: 12px !important;
+    }
+    
+    /* Container for the button to make it align better */
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    /* Footer styling */
+    .footer {
+        max-width: 950px;
+        width: 100%;
+        margin: 10px auto;
+        text-align: right;
+        font-size: 12px;
+        color: #666;
+    }
+# Add this to your CSS section
+
+
 
     </style>
+    """, unsafe_allow_html=True)
     
+    # Then inject the banner HTML separately
+    st.markdown("""
     <div class="banner-container">
         <img src="https://workable-application-form.s3.amazonaws.com/advanced/production/61680297d9510741dcbe0421/367aeef4-3d61-441e-b77f-6d99a5ac26f9" 
              alt="Angstrom Sports" 
@@ -242,6 +444,7 @@ def add_banner():
     </div>
     """, unsafe_allow_html=True)
 
+
 def add_who_we_are_pure_streamlit():
     # Style the container to look like the original
     st.markdown("""
@@ -251,18 +454,26 @@ def add_who_we_are_pure_streamlit():
         border-left: 6px solid #FF6B00 !important;
         border-radius: 8px !important;
         background-color: #f8f9fa !important;
+        max-width: 950px !important;
+        width: 950px !important;
+        margin-left: -20px !important;
+        margin-right: auto !important;
+        margin-top: -160px !important;
+        margin-bottom: -10px !important;
     }
     
     /* Style for the expander header */
     [data-testid="stExpander"] > div:first-child {
         border-radius: 8px !important;
         background-color: #f8f9fa !important;
+        width: 100% !important;
     }
     
     /* Style for the expander content */
     [data-testid="stExpander"] > div:nth-child(2) {
         background-color: #f8f9fa !important;
         border-radius: 0 0 8px 8px !important;
+        width: 100% !important;
     }
     
     /* Text styling */
@@ -280,6 +491,7 @@ def add_who_we_are_pure_streamlit():
         font-weight: 700 !important;
         color: #1a1f36 !important;
     }
+
     </style>
     """, unsafe_allow_html=True)
     
@@ -289,18 +501,60 @@ def add_who_we_are_pure_streamlit():
         Angstrom Sports is a cutting-edge sports analytics company specializing in advanced metrics and player evaluation tools. 
         Our team combines expertise in data science, sports scouting, and machine learning to deliver unparalleled insights into player potential and performance. 
         This NBA Draft Big Board represents our comprehensive analysis of the top prospects in this year's draft class from NCAA prospects only.
-        """)# Set up the page configuration
+        """)
+
+# Set up the page configuration
 st.set_page_config(
     page_title="NBA Draft Big Board",
     page_icon="🏀",
-    layout="wide"
+    layout="centered"  # Use centered layout for better control
 )
 
 # Add the banner
 add_banner()
 
-# Main content wrapper with margin adjustment
-st.markdown('<div class="main-content">', unsafe_allow_html=True)
+# Force the container width for the entire app
+st.markdown("""
+<style>
+    /* Force Streamlit to use our container width */
+    .main-container {
+        max-width: 900px !important;
+        width: 900px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        position: relative !important;
+    }
+    
+    section[data-testid="stSidebar"] {
+        display: none !important;
+    }
+    
+    [data-testid="stHeader"] {
+        display: none !important;
+    }
+    
+    .block-container {
+        max-width: 900px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    
+    /* Button container positioning fix */
+    [data-testid="column"]:last-child {
+        position: relative !important;
+    }
+    
+    /* Position the button container correctly */
+    [data-testid="column"]:last-child > div {
+        position: absolute !important;
+        right: 0 !important;
+        top: 0 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Main content wrapper with fixed width container
+st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
 # Add Who We Are section
 add_who_we_are_pure_streamlit()
@@ -390,14 +644,12 @@ def get_draft_data():
     }
     return pd.DataFrame(data)
 
-# Function to get player details
+# Function to get player details - placeholder details for now
 def get_player_details(player_name):
     return {
-        "strengths": ["TO COME LATER"],
-        "weaknesses": ["TO COME LATER"],
-        "stats": {"TO COME LATER": "TO COME LATER"},
-        "metrics": {"TO COME LATER": 0},
-        "scouting": "TO COME LATER"
+        "strengths": ["Elite scoring ability", "Defensive versatility", "High basketball IQ"],
+        "weaknesses": ["Needs to improve free throw shooting", "Can be turnover prone in transition"],
+        "scouting": "Shows excellent potential as a two-way player with room to develop as a playmaker. Has shown steady improvement throughout the season."
     }
 
 # Get the data
@@ -407,16 +659,64 @@ df = get_draft_data()
 if 'expanded_player' not in st.session_state:
     st.session_state.expanded_player = None
 
-def toggle_player(player_name):
-    if st.session_state.expanded_player == player_name:
-        st.session_state.expanded_player = None
-    else:
-        st.session_state.expanded_player = player_name
+# Initialize button keys in session state if not present
+if 'button_keys' not in st.session_state:
+    st.session_state.button_keys = {name: f"btn_{i}" for i, name in enumerate(df['Name'])}
 
-# Main content
-st.markdown('<div class="big-board-title">2025 NBA DRAFT BIG BOARD</div>', unsafe_allow_html=True)
+# Create title and filter section with default Streamlit styling
+st.markdown("""
+<style>
+    /* Title styling */
+    .big-board-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #0E1726;
+        letter-spacing: 1px;
+        margin-bottom: 0 !important;
+        text-transform: uppercase;
+        padding-bottom: 8px;
+        border-bottom: 3px solid #FF6B00;
+        width: 950px !important;
+    }
+    
+    /* Just minimal adjustments to position the filter */
+    .stSelectbox {
+        margin-top: 25px !important;
+        width: 200px !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-# Table header with adjusted column widths
+# Create the title and filter row
+title_container = st.container()
+with title_container:
+    col1, col2 = st.columns([0.8, 0.2])
+    
+    with col1:
+        st.markdown('<div class="big-board-title">2025 NBA DRAFT BIG BOARD</div>', unsafe_allow_html=True)
+    
+    with col2:
+        all_positions = ['ALL'] + sorted(df['Position'].unique().tolist())
+        selected_position = st.selectbox(
+            "Filter by Position",
+            all_positions,
+            index=0,
+            key="position_filter",
+            label_visibility="collapsed"
+        )
+
+# Apply filter
+if selected_position != 'ALL':
+    df = df[df['Position'] == selected_position]
+
+# Filter the dataframe if a specific position is selected
+if selected_position != 'ALL':
+    df = df[df['Position'] == selected_position]
+
+# Wrap the table in a fixed-width container
+st.markdown('<div class="table-container">', unsafe_allow_html=True)
+
+# Table header with fixed width and aligned cells
 st.markdown("""
 <div class="table-header">
     <div class="player-cell rank-cell">RANK</div>
@@ -433,18 +733,24 @@ st.markdown("""
     <div class="player-cell stat-cell">DREB</div>
     <div class="player-cell stat-cell">DTO</div>
     <div class="player-cell stat-cell">DFL</div>
+    <div class="player-cell stat-cell"></div>
     <div class="player-cell arrow-cell"></div>
 </div>
 """, unsafe_allow_html=True)
 
-# Display player rows
-for idx, player in df.iterrows():
-    is_expanded = st.session_state.expanded_player == player['Name']
-    row_class = "player-row"
-    if is_expanded:
-        row_class += " expanded"
+# Function to toggle player expansion
+def toggle_player(player_name):
+    if st.session_state.expanded_player == player_name:
+        st.session_state.expanded_player = None
+    else:
+        st.session_state.expanded_player = player_name
+
+# Function to create the accordion-style toggle (more professional)
+def create_player_row(player, expanded):
+    row_class = "player-row expanded" if expanded else "player-row"
     
-    st.markdown(f"""
+    # Write player row HTML - fixed width
+    html = f"""
     <div class="{row_class}">
         <div class="player-cell rank-cell">{player['Rank']}</div>
         <div class="player-cell name-cell">{player['Name']}</div>
@@ -460,20 +766,289 @@ for idx, player in df.iterrows():
         <div class="player-cell stat-cell">{player['DREB']}</div>
         <div class="player-cell stat-cell">{player['DTO']}</div>
         <div class="player-cell stat-cell">{player['DFOUL']}</div>
-        <div class="player-cell arrow-cell">
-            <button class="arrow-btn" onclick="togglePlayer('{player['Name']}')">
-                {'▲' if is_expanded else '▼'}
-            </button>
-        </div>
+        <div class="player-cell stat-cell"></div>
     </div>
-    """, unsafe_allow_html=True)
+    """
     
+    # If expanded, also return the expanded content with new professional design
+    if expanded:
+        # Generate mock data for the new sections
+        biometrics = {
+            "Height": player['Height'],
+            "Weight": f"{180 + player['Rank'] % 40} lbs",
+            "Wingspan": f"{6 + (player['Rank'] % 3)}'{ 8 + (player['Rank'] % 4)}\"",
+            "Standing Reach": f"{8 + (player['Rank'] % 2)}'{ 2 + (player['Rank'] % 6)}\"",
+            "Vertical": f"{30 + (player['Rank'] % 15)} inches"
+        }
+        
+        comparisons = [
+            f"NBA: {['Jayson Tatum', 'Luka Doncic', 'Anthony Edwards', 'Jalen Green', 'Cade Cunningham'][player['Rank'] % 5]}",
+            f"Historical: {['Michael Jordan', 'Kobe Bryant', 'LeBron James', 'Kevin Durant', 'Stephen Curry'][player['Rank'] % 5]}",
+            f"Ceiling: {['All-Star', 'All-NBA', 'MVP Candidate', 'Franchise Player', 'Role Player'][player['Rank'] % 5]}",
+            f"Floor: {['Rotation Player', 'Bench Scorer', 'Defensive Specialist', 'Two-Way Player', 'Development Project'][player['Rank'] % 5]}"
+        ]
+        
+        position_ranks = [
+            f"2024: #{1 + (player['Rank'] % 5)} {player['Position']}",
+            f"2023: #{1 + (player['Rank'] % 7)} {player['Position']}",
+            f"2022: #{1 + (player['Rank'] % 6)} {player['Position']}",
+            f"2021: #{1 + (player['Rank'] % 8)} {player['Position']}",
+            f"2020: #{1 + (player['Rank'] % 4)} {player['Position']}"
+        ]
+        
+        # Create the biometrics HTML
+        biometrics_html = ""
+        for key, value in biometrics.items():
+            biometrics_html += f'<div class="biometric-item"><span class="biometric-label">{key}:</span> <span class="biometric-value">{value}</span></div>'
+        
+        # Create the comparisons HTML
+        comparisons_html = ""
+        for comp in comparisons:
+            comparisons_html += f'<li>{comp}</li>'
+        
+        # Create the position ranks HTML
+        ranks_html = ""
+        for rank in position_ranks:
+            ranks_html += f'<li>{rank}</li>'
+        
+        # Create the expanded content HTML
+        expanded_html = f"""
+        <style>
+        .player-details {{
+            padding: 24px;
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+            margin-bottom: 16px;
+            border-left: 4px solid #FF6B00;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            width: 950px !important;
+            margin-left: auto;
+            margin-right: auto;
+        }}
+        
+        .player-profile-header {{
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 20px;
+        }}
+        
+        .player-image-container {{
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-right: 24px;
+            border: 2px solid #FF6B00;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }}
+        
+        .player-image {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }}
+        
+        .player-header-info {{
+            flex: 1;
+            position: relative;
+        }}
+        
+        .player-header-info h2 {{
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            font-weight: 800;
+            color: #0E1726;
+            letter-spacing: 0.5px;
+        }}
+        
+        .player-subheader {{
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 12px;
+        }}
+        
+        .player-rank-badge {{
+            display: inline-block;
+            background: #FF6B00;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }}
+        
+        .player-details-grid {{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }}
+        
+        .player-details-section {{
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }}
+        
+        .player-details-section h3 {{
+            margin: 0 0 16px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #0E1726;
+            border-bottom: 2px solid #FF6B00;
+            padding-bottom: 8px;
+        }}
+        
+        .biometrics-grid {{
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }}
+        
+        .biometric-item {{
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px dashed #ddd;
+        }}
+        
+        .biometric-label {{
+            font-weight: 600;
+            color: #555;
+        }}
+        
+        .biometric-value {{
+            font-weight: 700;
+            color: #0E1726;
+        }}
+        
+        .comparisons-list, .rank-history-list {{
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }}
+        
+        .comparisons-list li, .rank-history-list li {{
+            padding: 8px 0;
+            border-bottom: 1px solid #eaeaea;
+            font-size: 15px;
+        }}
+        
+        .comparisons-list li:last-child, .rank-history-list li:last-child {{
+            border-bottom: none;
+        }}
+        
+        @media (max-width: 768px) {{
+            .player-details-grid {{
+                grid-template-columns: 1fr;
+            }}
+            
+            .player-profile-header {{
+                flex-direction: column;
+                text-align: center;
+            }}
+            
+            .player-image-container {{
+                margin-right: 0;
+                margin-bottom: 16px;
+            }}
+        }}
+        </style>
+        
+        <div class="player-details">
+            <div class="player-profile-header">
+                <div class="player-image-container">
+                    <img src="https://a.espncdn.com/combiner/i?img=/i/headshots/mens-college-basketball/players/full/5041939.png&w=350&h=254" 
+                         alt="{player['Name']}" 
+                         class="player-image">
+                </div>
+                <div class="player-header-info">
+                    <h2>{player['Name']}</h2>
+                    <div class="player-subheader">
+                        <span class="player-school">{player['School']}</span> | 
+                        <span class="player-position">{player['Position']}</span> | 
+                        <span class="player-age">Age: {player['Age']}</span>
+                    </div>
+                    <div class="player-rank-badge">RANK #{player['Rank']}</div>
+                </div>
+            </div>
+            
+            <div class="player-details-grid">
+                <div class="player-details-section">
+                    <h3>Player Biometrics</h3>
+                    <div class="biometrics-grid">
+                        {biometrics_html}
+                    </div>
+                </div>
+                
+                <div class="player-details-section">
+                    <h3>Player Comparisons</h3>
+                    <ul class="comparisons-list">
+                        {comparisons_html}
+                    </ul>
+                </div>
+                
+                <div class="player-details-section">
+                    <h3>Position Rank (Last 5 Years)</h3>
+                    <ul class="rank-history-list">
+                        {ranks_html}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        """
+        return html, expanded_html
+    
+    return html, ""
 
+# Display player rows using a more optimized layout with no gaps
+# Display player rows using a more optimized layout with no gaps
+for idx, player in df.iterrows():
+    is_expanded = st.session_state.expanded_player == player['Name']
     
+    # Create the player row and get any expanded content
+    row_html, expanded_html = create_player_row(player, is_expanded)
     
+    # Create a container with no padding/margin
+    row_container = st.container()
+    
+    with row_container:
+        # Create a two-column layout with adjusted ratio to make player row wider
+        cols = st.columns([0.97, 0.03])  # Adjust ratio to give more space for the button
+        
+        # First column: Player row data
+        with cols[0]:
+            st.markdown(row_html, unsafe_allow_html=True)
+        
+        # Second column: Arrow button
+        with cols[1]:
+            btn_text = "▲" if is_expanded else "▼"
+            btn_key = st.session_state.button_keys[player['Name']]
+            
+            # Using on_click for the callback
+            st.button(btn_text, key=btn_key, on_click=toggle_player, args=(player['Name'],))
+        
+        # Display expanded content if needed
+        if expanded_html:
+            st.markdown(expanded_html, unsafe_allow_html=True)
+
+# Close the table container
+st.markdown('</div>', unsafe_allow_html=True)
+
 # Add footer
-st.markdown("---")
-st.write("DATA LAST UPDATED: APRIL 2025")
+st.markdown('<div class="footer">DATA LAST UPDATED: APRIL 2025</div>', unsafe_allow_html=True)
 
 # Close the main content div
 st.markdown('</div>', unsafe_allow_html=True)
+
+# Add additional padding at the bottom
+st.markdown("""
+<style>
+    body {
+        padding-bottom: 50px !important;
+    }
+</style>
+""", unsafe_allow_html=True)
