@@ -266,14 +266,24 @@ def add_banner():
         box-sizing: border-box !important;
     }
     
-    .pos-cell, .height-cell {
-        width: 45px !important;
-        min-width: 45px !important;
-        max-width: 45px !important;
-        text-align: center;
-        color: #555;
-        box-sizing: border-box !important;
-    }
+    .pos-cell {
+    width: 45px !important;
+    min-width: 45px !important;
+    max-width: 45px !important;
+    text-align: center;
+    color: #555;
+    box-sizing: border-box !important;
+    margin-right: 20px !important;
+}
+
+.height-cell {
+    width: 45px !important;
+    min-width: 45px !important;
+    max-width: 45px !important;
+    text-align: center;
+    color: #555;
+    box-sizing: border-box !important;
+}
     
     .school-cell {
         width: 130px !important;
