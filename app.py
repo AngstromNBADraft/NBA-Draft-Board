@@ -306,27 +306,28 @@ def add_banner():
         max-width: 30px !important;
         text-align: center;
         box-sizing: border-box !important;
+        border-right: 2px solid #eaeaea;
     }
     
-    /* Adjust button positioning to move it more to the right */
     div[data-testid="stButton"] button {
     background: #FF6B00 !important;
     color: white !important;
     border: none !important;
     border-radius: 4px !important;
-    width: 40px !important;     /* Reduced from 30px */
-    height: 5px !important;    /* Reduced from 20px */
-    padding: 3px !important;
+    min-width: 30px !important;     /* Using min-width instead of width */
+    min-height: 12px !important;     /* Using min-height */
+    padding: 1px !important;        /* Reduced padding */
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     font-weight: bold !important;
     transition: all 0.2s ease !important;
-    margin: 2px 0 2px 0 !important;
-
-    font-size: 10px !important; /* Reduced from 12px */
+    margin: 6px 0 2px 0 !important;
+    font-size: 12px !important;      /* Even smaller font */
     position: absolute !important;
-    right: -15px !important;
+    right: -5px !important;
+    line-height: 1.75 !important;      /* Added to reduce height */
+    overflow: hidden !important;    /* Ensures content doesn't expand button */
 }
     
     div[data-testid="stButton"] button:hover {
