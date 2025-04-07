@@ -9,53 +9,90 @@ def add_banner():
     * {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
-.main-container,
-.who-we-are,
-.big-board-title,
-.table-container,
-.table-header,
-.player-row,
-.player-details,
-.footer,
-[data-testid="stExpander"] {
-    max-width: 950px !important;
-    width: 950px !important;
-    margin-left: -20px !important;  /* Negative value to pull content left */
-    margin-right: auto !important;
-}
+    .main-container,
+    .who-we-are,
+    .big-board-title,
+    .table-container,
+    .table-header,
+    .player-row,
+    .player-details,
+    .footer,
+    [data-testid="stExpander"] {
+        max-width: 900px !important; /* Reduced from 950px for better fit */
+        width: 900px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+    }
 
-/* Also adjust the app container */
-[data-testid="stAppViewContainer"] > div:first-child {
-    max-width: 950px !important;
-    margin-left: -20px !important;  /* Negative value to pull content left */
-    margin-right: auto !important;
-}
-
-/* Make sure the block container is also shifted left */
-.block-container {
-    max-width: 950px !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: -20px !important;  /* Negative value to pull content left */
-
-}
-
-/* Adjust the main container */
-.main-container {
-    max-width: 950px !important;
-    width: 950px !important;
-    margin-left: -20px !important;  /* Negative value to pull content left */
-    margin-right: auto !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    position: relative !important;
-
-}
-/* Make sure all elements align properly */
-.big-board-title {
-    margin-top: 20px !important;
-}
+    /* Fix title and filter alignment */
+    .big-board-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #0E1726;
+        letter-spacing: 1px;
+        margin-bottom: 0px !important;
+        text-transform: uppercase;
+        border-bottom: 3px solid #FF6B00;
+        padding-bottom: 8px;
+        width: 75% !important; /* Take only 75% of the row width */
+        display: inline-block !important;
+        vertical-align: middle !important;
+    }
     
+    /* Fix filter positioning */
+    .stSelectbox {
+        margin-top: 0 !important;
+        width: 150px !important;
+        float: right !important;
+        margin-right: 20px !important;
+    }
+    
+    /* Clear float after the title/filter row */
+    .filter-row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    
+    /* Make sure the About Us expander has proper width */
+    [data-testid="stExpander"] {
+        width: 900px !important;
+        max-width: 900px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box !important;
+        padding-right: 20px !important; /* Add padding to prevent right cut-off */
+    }
+    
+    /* Fix app container width */
+    [data-testid="stAppViewContainer"] > div:first-child {
+        max-width: 900px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
+    /* Fix block container width */
+    .block-container {
+        max-width: 900px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
+    /* Fix dropdown container */
+    div[data-baseweb="select"] {
+        max-width: 220px !important;
+        border: 1px solid #646E78  ;
+        border-radius: 8px !important;
+    }
+    
+    /* Ensure dropdown menu doesn't get cut off */
+    div[data-baseweb="popover"] {
+        z-index: 1000 !important;
+    }    
     .banner-container {
         position: fixed;
         top: 0;
@@ -75,6 +112,21 @@ def add_banner():
         height: 40px;
         object-fit: contain;
     }
+.stApp {
+    background: #E5E8ED    !important; /* Same blue background as the first app */
+}
+
+/* Update the app container to match the styling */
+[data-testid="stAppViewContainer"] {
+    max-width: 950px !important;
+    background: white !important; /* Light gray background for content area */
+    padding: .5rem !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+border-left: 1px solid #FF6B00;
+border-right: 1px solid #FF6B00;
+    margin: 0 auto !important;
+    margin-top: 60px !important; /* Adjusted for the existing header */
+}
     
     .banner-text-main {
         font-weight: 700;
@@ -114,6 +166,7 @@ def add_banner():
         padding: 0 !important;
         box-sizing: border-box !important;
         position: relative !important;
+
     }
     
     /* Make sure Streamlit containers respect our width */
@@ -177,7 +230,7 @@ def add_banner():
         margin-bottom: 0px !important;
         text-transform: uppercase;
         border-bottom: 3px solid #FF6B00;
-        padding-bottom: 8px;
+        padding-bottom: 0px;
         max-width: 950px;
         width: 100%;
         margin-left: auto;
@@ -196,6 +249,7 @@ def add_banner():
         font-size: 13px;
         padding: 10px 0;
         border-radius: 4px 4px 0 0;
+        margin-top: -10px !important;
         margin-bottom: 0 !important; /* Remove margin */
         width: 950px !important; /* Fixed width */
         box-sizing: border-box !important;
@@ -239,7 +293,7 @@ def add_banner():
     
     .player-cell {
         padding: 0 8px;
-        font-size: 14px;
+        font-size: 13px;
         text-transform: uppercase;
         font-weight: 500;
         color: #333;
@@ -258,56 +312,59 @@ def add_banner():
     }
     
     .name-cell {
-        width: 200px !important;
-        min-width: 200px !important;
-        max-width: 200px !important;
+        width: 210px !important;
+        min-width: 210px !important;
+        max-width: 210px !important;
         font-weight: 700;
         letter-spacing: 0.5px;
         box-sizing: border-box !important;
     }
     
     .pos-cell {
-    width: 45px !important;
-    min-width: 45px !important;
-    max-width: 45px !important;
-    text-align: center;
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    text-align: left;
     color: #555;
     box-sizing: border-box !important;
     margin-right: 20px !important;
 }
 
 .height-cell {
-    width: 45px !important;
-    min-width: 45px !important;
-    max-width: 45px !important;
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
     text-align: center;
     color: #555;
     box-sizing: border-box !important;
 }
     
     .school-cell {
-        width: 130px !important;
-        min-width: 130px !important;
-        max-width: 130px !important;
+        width: 135px !important;
+        min-width: 135px !important;
+        max-width: 135px !important;
         text-align: center;
         box-sizing: border-box !important;
+border-right: 2px solid #eaeaea;
     }
     
     .age-cell {
-        width: 45px !important;
-        min-width: 45px !important;
-        max-width: 45px !important;
+        width: 50px !important;
+        min-width: 50px !important;
+        max-width: 50px !important;
         text-align: center;
         box-sizing: border-box !important;
+
     }
     
     .stat-cell {
-        width: 45px !important;
-        min-width: 45px !important;
-        max-width: 45px !important;
+        width: 50px !important;
+        min-width: 50px !important;
+        max-width: 50px !important;
         text-align: center;
         font-size: 13px;
         box-sizing: border-box !important;
+border-right: 2px solid #eaeaea;
     }
     
     .arrow-cell {
@@ -335,7 +392,7 @@ def add_banner():
     margin: 6px 0 2px 0 !important;
     font-size: 12px !important;      /* Even smaller font */
     position: absolute !important;
-    right: -5px !important;
+    right: 0px !important;
     line-height: 1.75 !important;      /* Added to reduce height */
     overflow: hidden !important;    /* Ensures content doesn't expand button */
 }
@@ -462,20 +519,30 @@ def add_who_we_are_pure_streamlit():
     <style>
     /* Style for the container */
     [data-testid="stExpander"] {
-        border-left: 6px solid #FF6B00 !important;
-        border-radius: 8px !important;
-        background-color: #f8f9fa !important;
-        max-width: 950px !important;
-        width: 950px !important;
-        margin-left: -20px !important;
-        margin-right: auto !important;
-        margin-top: -160px !important;
-        margin-bottom: -10px !important;
-    }
+    border-left: 6px solid #FF6B00 !important;
+    border-radius: 12px !important;
+    background-color: #f8f9fa !important;
+    max-width: 900px !important; /* Match the width of other components */
+    width: 900px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: -160px !important;
+    margin-bottom: -10px !important;
+    box-sizing: border-box !important;
+    padding-right: 0px !important; /* Remove extra padding */
+}
+
+/* Style for the expander header */
+[data-testid="stExpander"] > div:first-child {
+    border-radius: 12px !important;
+    background-color: #f8f9fa !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
     
     /* Style for the expander header */
     [data-testid="stExpander"] > div:first-child {
-        border-radius: 8px !important;
+        border-radius: 6px !important;
         background-color: #f8f9fa !important;
         width: 100% !important;
     }
@@ -529,8 +596,8 @@ st.markdown("""
 <style>
     /* Force Streamlit to use our container width */
     .main-container {
-        max-width: 900px !important;
-        width: 900px !important;
+        max-width: 950px !important;
+        width: 950px !important;
         margin: 0 auto !important;
         padding: 0 !important;
         position: relative !important;
@@ -627,11 +694,6 @@ def get_draft_data():
             2.7, 2.3, 2.5, 1.9, 2.8, 2.2, 2.3, 2.0, 2.9, 2.4, 1.7, 2.5, 3.0, 2.1,
             2.4, 2.2, 2.3, 1.5, 2.6
         ],
-        'OFOUL': [
-            1.8, 2.2, 1.9, 2.4, 2.1, 2.8, 1.7, 2.3, 3.1, 2.5, 1.9, 2.4, 2.2, 2.0,
-            1.8, 2.9, 2.3, 2.7, 2.1, 2.6, 1.9, 2.8, 2.3, 2.0, 3.2, 2.4, 2.7, 2.3,
-            2.0, 2.1, 1.8, 2.9, 2.2
-        ],
         'DPTS': [
             12.3, 14.1, 11.8, 15.5, 13.2, 9.8, 12.7, 14.3, 10.5, 13.9, 11.4, 10.2,
             12.7, 9.9, 11.8, 8.5, 10.1, 9.3, 12.6, 10.4, 13.8, 8.7, 14.3, 16.5,
@@ -647,11 +709,7 @@ def get_draft_data():
             1.7, 1.3, 1.5, 0.9, 1.8, 1.2, 1.3, 1.0, 1.9, 1.4, 0.7, 1.5, 2.0, 1.1,
             1.4, 1.2, 1.3, 0.5, 1.6
         ],
-        'DFOUL': [
-            2.8, 3.2, 2.9, 3.4, 3.1, 3.8, 2.7, 3.3, 4.1, 3.5, 2.9, 3.4, 3.2, 3.0,
-            2.8, 3.9, 3.3, 3.7, 3.1, 3.6, 2.9, 3.8, 3.3, 3.0, 4.2, 3.4, 3.7, 3.3,
-            3.0, 3.1, 2.8, 3.9, 3.2
-        ]
+
     }
     return pd.DataFrame(data)
 
@@ -686,22 +744,26 @@ st.markdown("""
         margin-bottom: 0 !important;
         text-transform: uppercase;
         padding-bottom: 8px;
-        border-bottom: 3px solid #FF6B00;
-        width: 950px !important;
+        border-bottom: 5px solid #FF6B00;
+        width: 900px !important;
     }
     
     /* Just minimal adjustments to position the filter */
     .stSelectbox {
-        margin-top: 25px !important;
-        width: 200px !important;
+        margin-top: 0px !important;
+        width: 220px !important;
+        margin-right: -2px !important;
+
     }
 </style>
 """, unsafe_allow_html=True)
 
 # Create the title and filter row
+# Create the title and filter row
 title_container = st.container()
 with title_container:
-    col1, col2 = st.columns([0.8, 0.2])
+    st.markdown('<div class="filter-row">', unsafe_allow_html=True)
+    col1, col2 = st.columns([0.85, 0.15])
     
     with col1:
         st.markdown('<div class="big-board-title">2025 NBA DRAFT BIG BOARD</div>', unsafe_allow_html=True)
@@ -715,6 +777,7 @@ with title_container:
             key="position_filter",
             label_visibility="collapsed"
         )
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Apply filter
 if selected_position != 'ALL':
@@ -734,16 +797,14 @@ st.markdown("""
     <div class="player-cell name-cell">NAME</div>
     <div class="player-cell pos-cell">POS</div>
     <div class="player-cell height-cell">HT</div>
-    <div class="player-cell school-cell">SCHOOL</div>
     <div class="player-cell age-cell">AGE</div>
+    <div class="player-cell school-cell">SCHOOL</div>
     <div class="player-cell stat-cell">OPTS</div>
     <div class="player-cell stat-cell">OREB</div>
     <div class="player-cell stat-cell">OTO</div>
-    <div class="player-cell stat-cell">OFL</div>
     <div class="player-cell stat-cell">DPTS</div>
     <div class="player-cell stat-cell">DREB</div>
     <div class="player-cell stat-cell">DTO</div>
-    <div class="player-cell stat-cell">DFL</div>
     <div class="player-cell stat-cell"></div>
     <div class="player-cell arrow-cell"></div>
 </div>
@@ -756,7 +817,6 @@ def toggle_player(player_name):
     else:
         st.session_state.expanded_player = player_name
 
-# Function to create the accordion-style toggle (more professional)
 def create_player_row(player, expanded):
     row_class = "player-row expanded" if expanded else "player-row"
     
@@ -767,231 +827,255 @@ def create_player_row(player, expanded):
         <div class="player-cell name-cell">{player['Name']}</div>
         <div class="player-cell pos-cell">{player['Position']}</div>
         <div class="player-cell height-cell">{player['Height']}</div>
-        <div class="player-cell school-cell">{player['School']}</div>
         <div class="player-cell age-cell">{player['Age']}</div>
+        <div class="player-cell school-cell">{player['School']}</div>
         <div class="player-cell stat-cell">{player['OPTS']}</div>
         <div class="player-cell stat-cell">{player['OREB']}</div>
         <div class="player-cell stat-cell">{player['OTO']}</div>
-        <div class="player-cell stat-cell">{player['OFOUL']}</div>
         <div class="player-cell stat-cell">{player['DPTS']}</div>
         <div class="player-cell stat-cell">{player['DREB']}</div>
         <div class="player-cell stat-cell">{player['DTO']}</div>
-        <div class="player-cell stat-cell">{player['DFOUL']}</div>
         <div class="player-cell stat-cell"></div>
     </div>
     """
     
     # If expanded, also return the expanded content with new professional design
     if expanded:
-        # Generate mock data for the new sections
-        biometrics = {
-            "Height": player['Height'],
-            "Weight": f"{180 + player['Rank'] % 40} lbs",
-            "Wingspan": f"{6 + (player['Rank'] % 3)}'{ 8 + (player['Rank'] % 4)}\"",
-            "Standing Reach": f"{8 + (player['Rank'] % 2)}'{ 2 + (player['Rank'] % 6)}\"",
-            "Vertical": f"{30 + (player['Rank'] % 15)} inches"
-        }
+        # Generate a minimal HTML container for the expanded content
+        expanded_html = f'''
+        <div style="padding: 10px; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 16px; border-left: 4px solid #FF6B00;">
+            <!-- Placeholder for Streamlit components -->
+        </div>
+        '''
         
-        comparisons = [
-            f"NBA: {['Jayson Tatum', 'Luka Doncic', 'Anthony Edwards', 'Jalen Green', 'Cade Cunningham'][player['Rank'] % 5]}",
-            f"Historical: {['Michael Jordan', 'Kobe Bryant', 'LeBron James', 'Kevin Durant', 'Stephen Curry'][player['Rank'] % 5]}",
-            f"Ceiling: {['All-Star', 'All-NBA', 'MVP Candidate', 'Franchise Player', 'Role Player'][player['Rank'] % 5]}",
-            f"Floor: {['Rotation Player', 'Bench Scorer', 'Defensive Specialist', 'Two-Way Player', 'Development Project'][player['Rank'] % 5]}"
-        ]
-        
-        position_ranks = [
-            f"2024: #{1 + (player['Rank'] % 5)} {player['Position']}",
-            f"2023: #{1 + (player['Rank'] % 7)} {player['Position']}",
-            f"2022: #{1 + (player['Rank'] % 6)} {player['Position']}",
-            f"2021: #{1 + (player['Rank'] % 8)} {player['Position']}",
-            f"2020: #{1 + (player['Rank'] % 4)} {player['Position']}"
-        ]
-        
-        # Create the biometrics HTML
-        biometrics_html = ""
-        for key, value in biometrics.items():
-            biometrics_html += f'<div class="biometric-item"><span class="biometric-label">{key}:</span> <span class="biometric-value">{value}</span></div>'
-        
-        # Create the comparisons HTML
-        comparisons_html = ""
-        for comp in comparisons:
-            comparisons_html += f'<li>{comp}</li>'
-        
-        # Create the position ranks HTML
-        ranks_html = ""
-        for rank in position_ranks:
-            ranks_html += f'<li>{rank}</li>'
-        
-        # Create the expanded content HTML
-        expanded_html = f"""
-        <style>
-        .player-details {{
-            padding: 24px;
-            background-color: white;
-            border-radius: 0 0 8px 8px;
-            margin-bottom: 16px;
-            border-left: 4px solid #FF6B00;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            width: 950px !important;
-            margin-left: auto;
-            margin-right: auto;
-        }}
-        
-        .player-profile-header {{
-            display: flex;
-            align-items: center;
-            margin-bottom: 24px;
-            border-bottom: 1px solid #eaeaea;
-            padding-bottom: 20px;
-        }}
-        
-        .player-image-container {{
-            width: 120px;
-            height: 120px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-right: 24px;
-            border: 2px solid #FF6B00;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }}
-        
-        .player-image {{
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }}
-        
-        .player-header-info {{
-            flex: 1;
-            position: relative;
-        }}
-        
-        .player-header-info h2 {{
-            margin: 0 0 8px 0;
-            font-size: 28px;
-            font-weight: 800;
-            color: #0E1726;
-            letter-spacing: 0.5px;
-        }}
-        
-        .player-subheader {{
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 12px;
-        }}
-        
-        .player-rank-badge {{
-            display: inline-block;
-            background: #FF6B00;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 14px;
-            letter-spacing: 1px;
-        }}
-        
-        .player-details-grid {{
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }}
-        
-        .player-details-section {{
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }}
-        
-        .player-details-section h3 {{
-            margin: 0 0 16px 0;
-            font-size: 18px;
-            font-weight: 700;
-            color: #0E1726;
-            border-bottom: 2px solid #FF6B00;
-            padding-bottom: 8px;
-        }}
-        
-        .biometrics-grid {{
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-        }}
-        
-        .biometric-item {{
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            border-bottom: 1px dashed #ddd;
-        }}
-        
-        .biometric-label {{
-            font-weight: 600;
-            color: #555;
-        }}
-        
-        .biometric-value {{
-            font-weight: 700;
-            color: #0E1726;
-        }}
-        
-        .comparisons-list, .rank-history-list {{
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }}
-        
-        .comparisons-list li, .rank-history-list li {{
-            padding: 8px 0;
-            border-bottom: 1px solid #eaeaea;
-            font-size: 15px;
-        }}
-        
-        .comparisons-list li:last-child, .rank-history-list li:last-child {{
-            border-bottom: none;
-        }}
-        
-        @media (max-width: 768px) {{
-            .player-details-grid {{
-                grid-template-columns: 1fr;
-            }}
-            
-            .player-profile-header {{
-                flex-direction: column;
-                text-align: center;
-            }}
-            
-            .player-image-container {{
-                margin-right: 0;
-                margin-bottom: 16px;
-            }}
-        }}
-        </style>
-        
-        <div class="player-details">
-            <div class="player-profile-header">
-                <div class="player-image-container">
-                    <img src="https://a.espncdn.com/combiner/i?img=/i/headshots/mens-college-basketball/players/full/5041939.png&w=350&h=254" 
-                         alt="{player['Name']}" 
-                         class="player-image">
-                </div>
-                <div class="player-header-info">
-                    <h2>{player['Name']}</h2>
-                    <div class="player-subheader">
-                        <span class="player-school">{player['School']}</span> | 
-                        <span class="player-position">{player['Position']}</span> | 
-                        <span class="player-age">Age: {player['Age']}</span>
-                    </div>
-                    <div class="player-rank-badge">RANK #{player['Rank']}</div>
-                </div>
-            </div>
-         
-             
-        """
+        # Return the basic HTML for the row and the expanded content
         return html, expanded_html
     
     return html, ""
+
+# Add this new function to handle the expanded details with Streamlit's native components
+import streamlit as st
+# Fix for the SyntaxError
+
+def display_expanded_player_details(player):
+    # Apply custom CSS to make things more professional
+    st.markdown("""
+    <style>
+    .section-title {
+        color: #0E1726;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #FF6B00;
+        padding-bottom: 8px;
+    }
+    
+    .comparison-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #eaeaea;
+        font-size: 15px;
+    }
+    
+    .comparison-item:last-child {
+        border-bottom: none;
+    }
+    
+    .highlighted-rank {
+        color: #FF6B00;
+        font-weight: 700;
+    }
+    
+    .rating-container {
+        margin-bottom: 16px;
+    }
+    
+    .rating-label {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+    
+    .rating-value {
+        color: #FF6B00;
+    }
+    
+    /* Style the Streamlit progress bar - override default styles */
+    div.stProgress > div > div {
+        background-color: #FF6B00;
+    }
+    
+    .player-header {
+        margin-bottom: 25px;
+    }
+    
+    .player-name {
+        font-size: 32px;
+        font-weight: 800;
+        margin: 0;
+        color: #0E1726;
+    }
+    
+    .player-subheader {
+        font-size: 16px;
+        color: #555;
+    }
+    
+    .rank-badge {
+        color: #FF6B00;
+        font-weight: 700;
+        font-size: 18px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Player header - separate from columns, shown at the top
+    st.markdown(f"""
+    <div class="player-header">
+        <h1 class="player-name">{player['Name'].upper()}</h1>
+        <div class="player-subheader">
+            {player['School']} | {player['Position']} | Age: {player['Age']}
+        </div>
+        <div class="rank-badge">
+            RANK #{player['Rank']}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Create a row with 4 columns
+    col_img, col_bio, col_comp, col_rank, col_rating = st.columns([1, 1.2, 1, 1, 1])
+    
+    with col_img:
+        # Player image
+        st.image("https://a.espncdn.com/combiner/i?img=/i/headshots/mens-college-basketball/players/full/5041939.png&w=350&h=254", 
+                use_container_width=True)
+        
+        # Player name under image
+        st.markdown(f"<div style='text-align: center; font-weight: bold; font-size: 18px; margin-top: 10px;'>{player['Name']}</div>", 
+                   unsafe_allow_html=True)
+    
+    with col_bio:
+        # Biometrics section with horizontal bars - more compact
+        st.markdown('<h4 style="color: #0E1726; font-weight: 700; margin-bottom: 10px; border-bottom: 2px solid #FF6B00; padding-bottom: 5px;">Biometrics</h4>', unsafe_allow_html=True)
+        biometrics = {
+            "Height": {"value": player['Height'], "percentile": 89, "display": player['Height']},
+            "Weight": {"value": f"{180 + player['Rank'] % 40} lbs", "percentile": 72, "display": f"{180 + player['Rank'] % 40} lbs"},
+            "Wingspan": {"value": f"{6 + (player['Rank'] % 3)}'{ 8 + (player['Rank'] % 4)}\"", "percentile": 94, "display": f"{6 + (player['Rank'] % 3)}'{ 8 + (player['Rank'] % 4)}\""},
+            "Standing Reach": {"value": f"{8 + (player['Rank'] % 2)}'{ 2 + (player['Rank'] % 6)}\"", "percentile": 87, "display": f"{8 + (player['Rank'] % 2)}'{ 2 + (player['Rank'] % 6)}\""},
+            "Vertical": {"value": f"{30 + (player['Rank'] % 15)} inches", "percentile": 81, "display": f"{30 + (player['Rank'] % 15)} in"}
+        }
+        
+        for key, data in biometrics.items():
+            # Get the percentile
+            percentile = data["percentile"]
+            
+            # Calculate color based on percentile
+            # Blue for all (matching the image provided)
+            color = f"rgb(107, 124, 180)"  # Blue
+            
+            # Create the metric visualization - more compact
+            st.markdown(f"""
+            <div style="margin-bottom: 8px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                    <span style="font-weight: 600; color: #555; font-size: 14px;">{key}</span>
+                    <span style="font-weight: 700; color: #333; font-size: 14px;">{data['display']}</span>
+                </div>
+                <div style="height: 18px; background-color: #e0e0e0; border-radius: 4px; position: relative;">
+                    <div style="position: absolute; left: 5px; top: 1px; font-size: 11px; font-weight: 600; color: white; z-index: 2;">{percentile}</div>
+                    <div style="width: {percentile}%; height: 100%; background-color: {color}; border-radius: 4px;"></div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    with col_comp:
+        # Player Comparisons - more compact
+        st.markdown('<h4 style="color: #0E1726; font-weight: 700; margin-bottom: 10px; border-bottom: 2px solid #FF6B00; padding-bottom: 5px;">Comparisons</h4>', unsafe_allow_html=True)
+        player_comparisons = [
+            "Paolo Banchero",
+            "Zion Williamson",
+            "Jabari Smith Jr.",
+            "Chet Holmgren",
+            "Victor Wembanyama"
+        ]
+        
+        for comp in player_comparisons:
+            st.markdown(f'<div style="padding: 4px 0; border-bottom: 1px solid #eaeaea; font-size: 14px;">{comp}</div>', unsafe_allow_html=True)
+    
+    with col_rank:
+        # 3 Year Draft Rank - more compact with 7 players and rank in orange box
+        st.markdown(f'<h4 style="color: #0E1726; font-weight: 700; margin-bottom: 10px; border-bottom: 2px solid #FF6B00; padding-bottom: 5px;">3-Year Mock <span style="display: inline-block; background-color: #FF6B00; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px;">#{player["Rank"]}</span></h4>', unsafe_allow_html=True)
+        
+        # Generate a list of 7 players with current player in the middle
+        current_rank = player['Rank']
+        player_names = {
+            current_rank-3: "Donovan Clingan",
+            current_rank-2: "Matas Buzelis",
+            current_rank-1: "Stephon Castle",
+            current_rank: player['Name'],      # Current player
+            current_rank+1: "Ron Holland",
+            current_rank+2: "Nikola Topic",
+            current_rank+3: "Zaccharie Risacher"
+        }
+        
+        # Create draft ranks list
+        draft_ranks = []
+        for i in range(current_rank-3, current_rank+4):
+            # Use the player name from the dictionary, or a generic name if not found
+            name = player_names.get(i, f"Player {i}")
+            draft_ranks.append({"rank": i, "name": name})
+        
+        for draft_player in draft_ranks:
+            if draft_player["name"] == player['Name']:
+                st.markdown(f"""
+                <div style="padding: 4px 0; border-bottom: 1px solid #eaeaea; font-size: 14px; color: #FF6B00; font-weight: 700;">
+                    #{draft_player['rank']} {draft_player['name']}
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                <div style="padding: 4px 0; border-bottom: 1px solid #eaeaea; font-size: 14px;">
+                    #{draft_player['rank']} {draft_player['name']}
+                </div>
+                """, unsafe_allow_html=True)
+    
+    with col_rating:
+        # Player Ratings - more compact
+        st.markdown('<h4 style="color: #0E1726; font-weight: 700; margin-bottom: 10px; border-bottom: 2px solid #FF6B00; padding-bottom: 5px;">Qualitative</h4>', unsafe_allow_html=True)
+        ratings = {
+            "Athleticism": {"percentile": 76, "display": "76.0"},
+            "Competitiveness": {"percentile": 71, "display": "71.5"},
+            "Maturity": {"percentile": 66, "display": "66.0"},
+            "Potential": {"percentile": 81, "display": "81.0"},
+            "Basketball IQ": {"percentile": 73, "display": "73.0"},
+        }
+        
+        for category, data in ratings.items():
+            percentile = data["percentile"]
+            
+            # Calculate color based on percentile - matching the image
+            if percentile < 40:
+                # Red for low percentiles
+                color = f"rgb(203, 68, 74)"
+            elif percentile < 60:
+                # Gray for middle percentiles
+                color = f"rgb(130, 130, 130)"
+            else:
+                # Blue for high percentiles
+                color = f"rgb(107, 124, 180)"
+                
+            # Create the metric visualization - more compact
+            st.markdown(f"""
+            <div style="margin-bottom: 8px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                    <span style="font-weight: 600; color: #555; font-size: 14px;">{category}</span>
+                    <span style="font-weight: 700; color: #333; font-size: 14px;">{data['display']}</span>
+                </div>
+                <div style="height: 18px; background-color: #e0e0e0; border-radius: 4px; position: relative;">
+                    <div style="position: absolute; left: 5px; top: 1px; font-size: 11px; font-weight: 600; color: white; z-index: 2;">{percentile}</div>
+                    <div style="width: {percentile}%; height: 100%; background-color: {color}; border-radius: 4px;"></div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
 # Display player rows using a more optimized layout with no gaps
 # Display player rows using a more optimized layout with no gaps
@@ -1022,7 +1106,7 @@ for idx, player in df.iterrows():
         
         # Display expanded content if needed
         if expanded_html:
-            st.markdown(expanded_html, unsafe_allow_html=True)
+            display_expanded_player_details(player)
 
 # Close the table container
 st.markdown('</div>', unsafe_allow_html=True)
