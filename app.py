@@ -929,18 +929,6 @@ def display_expanded_player_details(player):
     </style>
     """, unsafe_allow_html=True)
     
-    # Player header - separate from columns, shown at the top
-    st.markdown(f"""
-    <div class="player-header">
-        <h1 class="player-name">{player['Name'].upper()}</h1>
-        <div class="player-subheader">
-            {player['School']} | {player['Position']} | Age: {player['Age']}
-        </div>
-        <div class="rank-badge">
-            RANK #{player['Rank']}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
     
     # Create a row with 4 columns
     col_img, col_bio, col_comp, col_rank, col_rating = st.columns([1, 1.2, 1, 1, 1])
@@ -953,6 +941,7 @@ def display_expanded_player_details(player):
         # Player name under image
         st.markdown(f"<div style='text-align: center; font-weight: bold; font-size: 18px; margin-top: 10px;'>{player['Name']}</div>", 
                    unsafe_allow_html=True)
+
     
     with col_bio:
         # Biometrics section with horizontal bars - more compact
