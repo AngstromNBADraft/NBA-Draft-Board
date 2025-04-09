@@ -393,7 +393,7 @@ border-right: 2px solid #eaeaea;
     color: white !important;
     border: none !important;
     border-radius: 4px !important;
-    min-width: 26px !important;     /* Using min-width instead of width */
+    min-width: 30px !important;     /* Using min-width instead of width */
     min-height: 12px !important;     /* Using min-height */
     padding: 1px !important;        /* Reduced padding */
     display: flex !important;
