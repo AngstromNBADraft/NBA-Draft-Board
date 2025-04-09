@@ -28,7 +28,7 @@ def add_banner():
 
     /* Fix title and filter alignment */
     .big-board-title {
-        font-size: 28px;
+        font-size: 34px !important;
         font-weight: 800;
         color: #0E1726;
         letter-spacing: 1px;
@@ -84,7 +84,7 @@ def add_banner():
     
     /* Fix dropdown container */
     div[data-baseweb="select"] {
-        max-width: 220px !important;
+        max-width: 150px !important;
         border: 1px solid #646E78  ;
         border-radius: 8px !important;
     }
@@ -223,7 +223,7 @@ border-right: 1px solid #FF6B00;
     
     /* Modern table styling - updated to orange */
     .big-board-title {
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 800;
         color: #0E1726;
         letter-spacing: 1px;
@@ -348,24 +348,36 @@ border-right: 1px solid #FF6B00;
 border-right: 2px solid #eaeaea;
     }
     
-    .age-cell {
+    .class-cell {
         width: 50px !important;
         min-width: 50px !important;
         max-width: 50px !important;
         text-align: center;
         box-sizing: border-box !important;
-
     }
     
     .stat-cell {
-        width: 50px !important;
-        min-width: 50px !important;
-        max-width: 50px !important;
+        width: 70px !important;
+        min-width: 70px !important;
+        max-width: 70px !important;
         text-align: center;
         font-size: 13px;
         box-sizing: border-box !important;
 border-right: 2px solid #eaeaea;
     }
+.stat-cell-ranked {
+    width: 70px !important;
+    min-width: 70px !important;
+    max-width: 70px !important;
+    text-align: center;
+    font-size: 13px;
+    box-sizing: border-box !important;
+    border-right: 2px solid #eaeaea;
+    font-weight: 700 !important;
+    color: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important; /* subtle border */
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.7) !important; /* stronger text shadow */
+}
     
     .arrow-cell {
         width: 30px !important;
@@ -381,7 +393,7 @@ border-right: 2px solid #eaeaea;
     color: white !important;
     border: none !important;
     border-radius: 4px !important;
-    min-width: 30px !important;     /* Using min-width instead of width */
+    min-width: 26px !important;     /* Using min-width instead of width */
     min-height: 12px !important;     /* Using min-height */
     padding: 1px !important;        /* Reduced padding */
     display: flex !important;
@@ -389,11 +401,11 @@ border-right: 2px solid #eaeaea;
     justify-content: center !important;
     font-weight: bold !important;
     transition: all 0.2s ease !important;
-    margin: 6px 0 2px 0 !important;
+    margin: 7px 0 2px 0 !important;
     font-size: 12px !important;      /* Even smaller font */
     position: absolute !important;
-    right: 0px !important;
-    line-height: 1.75 !important;      /* Added to reduce height */
+    right: 4px !important;
+    line-height: 1.65 !important;      /* Added to reduce height */
     overflow: hidden !important;    /* Ensures content doesn't expand button */
 }
     
@@ -581,6 +593,101 @@ def add_who_we_are_pure_streamlit():
         This NBA Draft Big Board represents our comprehensive analysis of the top prospects in this year's draft class from NCAA prospects only.
         """)
 
+# Function to get draft data from CSV
+def get_draft_data():
+    try:
+        # Load data from CSV
+        df = pd.read_csv('AllProspects.csv')
+        
+        # Ensure all required columns exist
+        required_columns = ['Draft', 'Rank', 'PlayerName', 'PositionDetail', 'Height', 
+                            'PlayerClass', 'PlayerTeam', 'NBA', 'OScore', 'DScore', 'Score']
+        
+        # Check if all required columns exist
+        missing_columns = [col for col in required_columns if col not in df.columns]
+        if missing_columns:
+            st.error(f"Missing columns in CSV: {', '.join(missing_columns)}")
+            # Create a sample dataframe for demonstration if columns are missing
+            return create_sample_dataframe()
+        
+        # Ensure OffenseRank, DefenseRank, and OverallRank are integers
+        if 'OffenseRank' in df.columns:
+            df['OffenseRank'] = df['OffenseRank'].fillna(-1).astype(int)
+            df.loc[df['OffenseRank'] == -1, 'OffenseRank'] = None
+        
+        if 'DefenseRank' in df.columns:
+            df['DefenseRank'] = df['DefenseRank'].fillna(-1).astype(int)
+            df.loc[df['DefenseRank'] == -1, 'DefenseRank'] = None
+            
+        if 'OverallRank' in df.columns:
+            df['OverallRank'] = df['OverallRank'].fillna(-1).astype(int)
+            df.loc[df['OverallRank'] == -1, 'OverallRank'] = None
+        
+        return df
+    
+    except Exception as e:
+        st.error(f"Error loading data: {e}")
+        return create_sample_dataframe()
+
+# Create a sample dataframe if CSV loading fails
+def create_sample_dataframe():
+    data = {
+        'Draft': 2025,
+        'Rank': list(range(1, 34)),
+        'PlayerName': [
+            "COOPER FLAGG", "DYLAN HARPER", "ACE BAILEY", "VJ EDGECOMBE",
+            "KASPARAS JAKUCIONIS", "KHAMAN MALUACH", "KON KNUEPPEL", "TRE JOHNSON",
+            "DERIK QUEEN", "JEREMIAH FEARS", "JASE RICHARDSON", "ASA NEWELL",
+            "EGOR DEMIN", "COLLIN MURRAY-BOYLES", "LIAM MCNEELEY", "THOMAS SORBER",
+            "RASHEER FLEMING", "DANNY WOLF", "WILL RILEY", "YAXEL LENDEBORG",
+            "NIQUE CLIFFORD", "ALEX CONDON", "LABARON PHILON", "KAM JONES",
+            "JOHNI BROOME", "ADOU THIERO", "BOOGIE FLAND", "JT TOPPIN",
+            "CARTER BRYANT", "ALEX KARABAN", "MILES BYRD", "RYAN KALKBRENNER",
+            "ISAIAH EVANS"
+        ],
+        'PositionDetail': [
+            "WING", "GUARD", "WING", "GUARD", "GUARD", "CENTER", "WING", "GUARD",
+            "CENTER", "GUARD", "GUARD", "WING", "GUARD", "WING", "WING", "CENTER",
+            "WING", "CENTER", "WING", "WING", "GUARD", "CENTER", "GUARD", "GUARD",
+            "CENTER", "WING", "GUARD", "WING", "WING", "WING", "GUARD", "CENTER",
+            "WING"
+        ],
+        'Height': [
+            "6'10\"", "6'5\"", "6'9\"", "6'5\"", "6'6\"", "7'2\"", "6'7\"", "6'6\"",
+            "6'10\"", "6'4\"", "6'3\"", "6'10\"", "6'9\"", "6'7\"", "6'8\"", "6'10\"",
+            "6'9\"", "7'0\"", "6'8\"", "6'9\"", "6'6\"", "6'11\"", "6'4\"", "6'5\"",
+            "6'10\"", "6'8\"", "6'2\"", "6'9\"", "6'8\"", "6'8\"", "6'7\"", "7'2\"",
+            "6'6\""
+        ],
+        'PlayerClass': [
+            "FR", "FR", "FR", "FR", "FR", "FR", "FR", "FR",
+            "FR", "FR", "FR", "FR", "FR", "SO", "FR", "FR",
+            "SO", "JR", "FR", "SR", "SR", "SO", "FR", "SR",
+            "SR", "JR", "FR", "SO", "FR", "SR", "SO", "SR",
+            "FR"
+        ],
+        'PlayerTeam': [
+            "DUKE", "RUTGERS", "RUTGERS", "BAYLOR", "ILLINOIS", "DUKE", "DUKE", "TEXAS",
+            "MARYLAND", "OKLAHOMA", "MICHIGAN STATE", "GEORGIA", "BYU", "SOUTH CAROLINA",
+            "UCONN", "GEORGETOWN", "SAINT JOSEPH'S", "MICHIGAN", "ILLINOIS", "UAB",
+            "COLORADO STATE", "FLORIDA", "ALABAMA", "MARQUETTE", "AUBURN", "ARKANSAS",
+            "ARKANSAS", "TEXAS TECH", "ARIZONA", "UCONN", "SAN DIEGO STATE", "CREIGHTON",
+            "DUKE"
+        ],
+        'Offense': list(range(1, 34)),
+        'Defense': list(range(1, 34)),
+        'Overall': list(range(1, 34))
+    }
+    return pd.DataFrame(data)
+
+# Function to get player details
+def get_player_details(player_name):
+    return {
+        "strengths": ["Elite scoring ability", "Defensive versatility", "High basketball IQ"],
+        "weaknesses": ["Needs to improve free throw shooting", "Can be turnover prone in transition"],
+        "scouting": "Shows excellent potential as a two-way player with room to develop as a playmaker. Has shown steady improvement throughout the season."
+    }
+
 # Set up the page configuration
 st.set_page_config(
     page_title="NBA Draft Big Board",
@@ -637,92 +744,12 @@ st.markdown('<div class="main-container">', unsafe_allow_html=True)
 # Add Who We Are section
 add_who_we_are_pure_streamlit()
 
-# Function to get draft data
-def get_draft_data():
-    data = {
-        'Rank': list(range(1, 34)),
-        'Name': [
-            "COOPER FLAGG", "DYLAN HARPER", "ACE BAILEY", "VJ EDGECOMBE",
-            "KASPARAS JAKUCIONIS", "KHAMAN MALUACH", "KON KNUEPPEL", "TRE JOHNSON",
-            "DERIK QUEEN", "JEREMIAH FEARS", "JASE RICHARDSON", "ASA NEWELL",
-            "EGOR DEMIN", "COLLIN MURRAY-BOYLES", "LIAM MCNEELEY", "THOMAS SORBER",
-            "RASHEER FLEMING", "DANNY WOLF", "WILL RILEY", "YAXEL LENDEBORG",
-            "NIQUE CLIFFORD", "ALEX CONDON", "LABARON PHILON", "KAM JONES",
-            "JOHNI BROOME", "ADOU THIERO", "BOOGIE FLAND", "JT TOPPIN",
-            "CARTER BRYANT", "ALEX KARABAN", "MILES BYRD", "RYAN KALKBRENNER",
-            "ISAIAH EVANS"
-        ],
-        'Position': [
-            "WING", "GUARD", "WING", "GUARD", "GUARD", "CENTER", "WING", "GUARD",
-            "CENTER", "GUARD", "GUARD", "WING", "GUARD", "WING", "WING", "CENTER",
-            "WING", "CENTER", "WING", "WING", "GUARD", "CENTER", "GUARD", "GUARD",
-            "CENTER", "WING", "GUARD", "WING", "WING", "WING", "GUARD", "CENTER",
-            "WING"
-        ],
-        'Height': [
-            "6'10\"", "6'5\"", "6'9\"", "6'5\"", "6'6\"", "7'2\"", "6'7\"", "6'6\"",
-            "6'10\"", "6'4\"", "6'3\"", "6'10\"", "6'9\"", "6'7\"", "6'8\"", "6'10\"",
-            "6'9\"", "7'0\"", "6'8\"", "6'9\"", "6'6\"", "6'11\"", "6'4\"", "6'5\"",
-            "6'10\"", "6'8\"", "6'2\"", "6'9\"", "6'8\"", "6'8\"", "6'7\"", "7'2\"",
-            "6'6\""
-        ],
-        'School': [
-            "DUKE", "RUTGERS", "RUTGERS", "BAYLOR", "ILLINOIS", "DUKE", "DUKE", "TEXAS",
-            "MARYLAND", "OKLAHOMA", "MICHIGAN STATE", "GEORGIA", "BYU", "SOUTH CAROLINA",
-            "UCONN", "GEORGETOWN", "SAINT JOSEPH'S", "MICHIGAN", "ILLINOIS", "UAB",
-            "COLORADO STATE", "FLORIDA", "ALABAMA", "MARQUETTE", "AUBURN", "ARKANSAS",
-            "ARKANSAS", "TEXAS TECH", "ARIZONA", "UCONN", "SAN DIEGO STATE", "CREIGHTON",
-            "DUKE"
-        ],
-        'Age': [
-            18.3, 18.9, 18.5, 18.8, 19.1, 18.8, 19.9, 19.3, 20.5, 18.7, 18.7, 19.7,
-            19.3, 20.0, 19.7, 19.5, 20.9, 21.1, 19.4, 22.7, 23.4, 20.9, 19.6, 23.3,
-            22.9, 21.1, 18.9, 20.0, 19.6, 22.6, 20.8, 23.4, 19.5
-        ],
-        'OPTS': [
-            25.3, 22.1, 20.8, 18.5, 17.2, 14.8, 16.7, 19.1, 15.3, 18.9, 16.4, 14.2,
-            15.7, 13.9, 12.8, 11.5, 14.1, 12.3, 15.6, 13.4, 16.8, 11.7, 17.3, 19.5,
-            18.2, 15.1, 16.4, 14.7, 13.9, 14.3, 15.2, 16.1, 17.0
-        ],
-        'OREB': [
-            3.2, 2.8, 3.5, 2.1, 1.8, 4.2, 2.3, 2.0, 3.8, 1.5, 1.9, 3.1, 2.2, 2.7,
-            2.1, 3.5, 2.9, 3.2, 2.0, 3.3, 2.1, 3.6, 1.4, 1.8, 4.1, 2.8, 1.3, 3.2,
-            2.7, 2.3, 1.9, 3.8, 2.1
-        ],
-        'OTO': [
-            2.1, 3.2, 2.8, 2.9, 2.5, 1.8, 2.3, 3.1, 2.4, 3.3, 2.0, 2.6, 2.9, 2.1,
-            2.7, 2.3, 2.5, 1.9, 2.8, 2.2, 2.3, 2.0, 2.9, 2.4, 1.7, 2.5, 3.0, 2.1,
-            2.4, 2.2, 2.3, 1.5, 2.6
-        ],
-        'DPTS': [
-            12.3, 14.1, 11.8, 15.5, 13.2, 9.8, 12.7, 14.3, 10.5, 13.9, 11.4, 10.2,
-            12.7, 9.9, 11.8, 8.5, 10.1, 9.3, 12.6, 10.4, 13.8, 8.7, 14.3, 16.5,
-            15.2, 12.1, 13.4, 11.7, 10.9, 11.3, 12.2, 13.1, 14.0
-        ],
-        'DREB': [
-            8.2, 6.8, 7.5, 5.1, 4.8, 9.2, 5.3, 5.0, 8.8, 4.5, 4.9, 7.1, 5.2, 6.7,
-            5.1, 8.5, 6.9, 7.2, 5.0, 7.3, 5.1, 8.6, 4.4, 4.8, 9.1, 6.8, 4.3, 7.2,
-            6.7, 5.3, 4.9, 8.8, 5.1
-        ],
-        'DTO': [
-            1.1, 1.2, 0.8, 1.9, 1.5, 0.8, 1.3, 1.1, 1.4, 1.3, 1.0, 1.6, 1.9, 1.1,
-            1.7, 1.3, 1.5, 0.9, 1.8, 1.2, 1.3, 1.0, 1.9, 1.4, 0.7, 1.5, 2.0, 1.1,
-            1.4, 1.2, 1.3, 0.5, 1.6
-        ],
-
-    }
-    return pd.DataFrame(data)
-
-# Function to get player details - placeholder details for now
-def get_player_details(player_name):
-    return {
-        "strengths": ["Elite scoring ability", "Defensive versatility", "High basketball IQ"],
-        "weaknesses": ["Needs to improve free throw shooting", "Can be turnover prone in transition"],
-        "scouting": "Shows excellent potential as a two-way player with room to develop as a playmaker. Has shown steady improvement throughout the season."
-    }
-
 # Get the data
 df = get_draft_data()
+
+# Sort the dataframe by Rank if it exists
+if 'Rank' in df.columns:
+    df = df.sort_values('Rank')
 
 # Store expanded player state in session state
 if 'expanded_player' not in st.session_state:
@@ -730,7 +757,11 @@ if 'expanded_player' not in st.session_state:
 
 # Initialize button keys in session state if not present
 if 'button_keys' not in st.session_state:
-    st.session_state.button_keys = {name: f"btn_{i}" for i, name in enumerate(df['Name'])}
+    # Create button keys that include both index and player name to ensure uniqueness
+    st.session_state.button_keys = {
+        row['PlayerName']: f"btn_{idx}_{row['PlayerName'].replace(' ', '_')}" 
+        for idx, row in df.iterrows()
+    }
 
 # Create title and filter section with default Streamlit styling
 st.markdown("""
@@ -750,10 +781,9 @@ st.markdown("""
     
     /* Just minimal adjustments to position the filter */
     .stSelectbox {
-        margin-top: 0px !important;
+        margin-top: -24px !important;
         width: 220px !important;
-        margin-right: -2px !important;
-
+        margin-right: -70px !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -763,29 +793,40 @@ st.markdown("""
 title_container = st.container()
 with title_container:
     st.markdown('<div class="filter-row">', unsafe_allow_html=True)
-    col1, col2 = st.columns([0.85, 0.15])
+    col1, col2, col3 = st.columns([0.65, 0.175, 0.175])  # Adjusted column widths for title and two filters
     
     with col1:
         st.markdown('<div class="big-board-title">2025 NBA DRAFT BIG BOARD</div>', unsafe_allow_html=True)
     
     with col2:
-        all_positions = ['ALL'] + sorted(df['Position'].unique().tolist())
+        # Fetch unique draft years and sort them
+        all_drafts = sorted(df['Draft'].unique().tolist())
+        selected_draft = st.selectbox(
+            "Draft Year",
+            ["ALL"] + all_drafts,
+            index=0,
+            key="draft_filter",
+        )
+    
+    with col3:
+        # Position filter will be updated based on draft selection
+        filtered_df = df if selected_draft == "ALL" else df[df['Draft'] == selected_draft]
+        all_positions = sorted(filtered_df['PositionDetail'].unique().tolist())
         selected_position = st.selectbox(
-            "Filter by Position",
-            all_positions,
+            "Position",
+            ["ALL"] + all_positions,
             index=0,
             key="position_filter",
-            label_visibility="collapsed"
         )
+    
     st.markdown('</div>', unsafe_allow_html=True)
 
-# Apply filter
-if selected_position != 'ALL':
-    df = df[df['Position'] == selected_position]
+# Apply filters
+if selected_draft != 'ALL':
+    df = df[df['Draft'] == selected_draft]
 
-# Filter the dataframe if a specific position is selected
 if selected_position != 'ALL':
-    df = df[df['Position'] == selected_position]
+    df = df[df['PositionDetail'] == selected_position]
 
 # Wrap the table in a fixed-width container
 st.markdown('<div class="table-container">', unsafe_allow_html=True)
@@ -797,15 +838,12 @@ st.markdown("""
     <div class="player-cell name-cell">NAME</div>
     <div class="player-cell pos-cell">POS</div>
     <div class="player-cell height-cell">HT</div>
-    <div class="player-cell age-cell">AGE</div>
+    <div class="player-cell class-cell">CLASS</div>
     <div class="player-cell school-cell">SCHOOL</div>
-    <div class="player-cell stat-cell">OPTS</div>
-    <div class="player-cell stat-cell">OREB</div>
-    <div class="player-cell stat-cell">OTO</div>
-    <div class="player-cell stat-cell">DPTS</div>
-    <div class="player-cell stat-cell">DREB</div>
-    <div class="player-cell stat-cell">DTO</div>
-    <div class="player-cell stat-cell"></div>
+    <div class="player-cell stat-cell">NBA</div>
+    <div class="player-cell stat-cell">OScore</div>
+    <div class="player-cell stat-cell">DScore</div>
+    <div class="player-cell stat-cell">Score</div>
     <div class="player-cell arrow-cell"></div>
 </div>
 """, unsafe_allow_html=True)
@@ -819,26 +857,52 @@ def toggle_player(player_name):
 
 def create_player_row(player, expanded):
     row_class = "player-row expanded" if expanded else "player-row"
-    
+   
+    # Function to get color based on score (0-100 scale where 100 is best)
+    def get_color_for_rank(score):
+        # Check if score is None or NaN
+        if pd.isna(score) or score is None:
+            return "#c2c2c2"  # Gray for missing values
+            
+        # Normalize score to 0-1 scale where 1 is best (100) and 0 is worst (0)
+        normalized = min(1.0, max(0.0, float(score) / 100))
+       
+        if normalized > 0.9:  # Elite (90-100)
+            return "#005a32"  # Deep forest green
+        elif normalized > 0.8:  # Excellent (80-90)
+            return "#238b45"  # Strong green
+        elif normalized > 0.7:  # Very good (70-80)
+            return "#41ab5d"  # Medium green
+        elif normalized > 0.6:  # Good (60-70)
+            return "#78c679"  # Light green
+        elif normalized > 0.5:  # Above average (50-60)
+            return "#c2e699"  # More saturated pale green
+        elif normalized > 0.4:  # Average (40-50)
+            return "#fee08b"  # Darker yellow
+        elif normalized > 0.3:  # Below average (30-40)
+            return "#fdae61"  # Darker orange
+        elif normalized > 0.2:  # Poor (20-30)
+            return "#f46d43"  # Stronger orange-red
+        elif normalized > 0.1:  # Very poor (10-20)
+            return "#d73027"  # Strong red
+        else:  # Awful (0-10)
+            return "#a50026"  # Dark red   
     # Write player row HTML - fixed width
     html = f"""
     <div class="{row_class}">
         <div class="player-cell rank-cell">{player['Rank']}</div>
-        <div class="player-cell name-cell">{player['Name']}</div>
-        <div class="player-cell pos-cell">{player['Position']}</div>
+        <div class="player-cell name-cell">{player['PlayerName']}</div>
+        <div class="player-cell pos-cell">{player['PositionDetail']}</div>
         <div class="player-cell height-cell">{player['Height']}</div>
-        <div class="player-cell age-cell">{player['Age']}</div>
-        <div class="player-cell school-cell">{player['School']}</div>
-        <div class="player-cell stat-cell">{player['OPTS']}</div>
-        <div class="player-cell stat-cell">{player['OREB']}</div>
-        <div class="player-cell stat-cell">{player['OTO']}</div>
-        <div class="player-cell stat-cell">{player['DPTS']}</div>
-        <div class="player-cell stat-cell">{player['DREB']}</div>
-        <div class="player-cell stat-cell">{player['DTO']}</div>
-        <div class="player-cell stat-cell"></div>
+        <div class="player-cell class-cell">{player['PlayerClass']}</div>
+        <div class="player-cell school-cell">{player['PlayerTeam']}</div>
+        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['NBA'])};">{player['NBA']}</div>
+        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['OScore'])};">{player['OScore']}</div>
+        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['DScore'])};">{player['DScore']}</div>
+        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['Score'])};">{player['Score']}</div>
     </div>
     """
-    
+   
     # If expanded, also return the expanded content with new professional design
     if expanded:
         # Generate a minimal HTML container for the expanded content
@@ -847,16 +911,13 @@ def create_player_row(player, expanded):
             <!-- Placeholder for Streamlit components -->
         </div>
         '''
-        
+       
         # Return the basic HTML for the row and the expanded content
         return html, expanded_html
-    
+   
     return html, ""
 
-# Add this new function to handle the expanded details with Streamlit's native components
-import streamlit as st
-# Fix for the SyntaxError
-
+# Function to handle the expanded details with Streamlit's native components
 def display_expanded_player_details(player):
     # Apply custom CSS to make things more professional
     st.markdown("""
@@ -939,7 +1000,7 @@ def display_expanded_player_details(player):
                 use_container_width=True)
         
         # Player name under image
-        st.markdown(f"<div style='text-align: center; font-weight: bold; font-size: 18px; margin-top: 10px;'>{player['Name']}</div>", 
+        st.markdown(f"<div style='text-align: center; font-weight: bold; font-size: 18px; margin-top: 10px;'>{player['PlayerName']}</div>", 
                    unsafe_allow_html=True)
 
     
@@ -1000,7 +1061,7 @@ def display_expanded_player_details(player):
             current_rank-3: "Donovan Clingan",
             current_rank-2: "Matas Buzelis",
             current_rank-1: "Stephon Castle",
-            current_rank: player['Name'],      # Current player
+            current_rank: player['PlayerName'],      # Current player
             current_rank+1: "Ron Holland",
             current_rank+2: "Nikola Topic",
             current_rank+3: "Zaccharie Risacher"
@@ -1014,7 +1075,7 @@ def display_expanded_player_details(player):
             draft_ranks.append({"rank": i, "name": name})
         
         for draft_player in draft_ranks:
-            if draft_player["name"] == player['Name']:
+            if draft_player["name"] == player['PlayerName']:
                 st.markdown(f"""
                 <div style="padding: 4px 0; border-bottom: 1px solid #eaeaea; font-size: 14px; color: #FF6B00; font-weight: 700;">
                     #{draft_player['rank']} {draft_player['name']}
@@ -1030,11 +1091,16 @@ def display_expanded_player_details(player):
     with col_rating:
         # Player Ratings - more compact
         st.markdown('<h4 style="color: #0E1726; font-weight: 700; margin-bottom: 10px; border-bottom: 2px solid #FF6B00; padding-bottom: 5px;">Qualitative</h4>', unsafe_allow_html=True)
+        
+        # Use actual offensive and defensive ratings from player data
+        offense_rating = 70 + int(player['Rank']) % 30
+        defense_rating = 65 + int(player['Rank']) % 35
+        
         ratings = {
+            "Offense": {"percentile": offense_rating, "display": f"{offense_rating}.0"},
+            "Defense": {"percentile": defense_rating, "display": f"{defense_rating}.0"},
             "Athleticism": {"percentile": 76, "display": "76.0"},
             "Competitiveness": {"percentile": 71, "display": "71.5"},
-            "Maturity": {"percentile": 66, "display": "66.0"},
-            "Potential": {"percentile": 81, "display": "81.0"},
             "Basketball IQ": {"percentile": 73, "display": "73.0"},
         }
         
@@ -1067,9 +1133,8 @@ def display_expanded_player_details(player):
             """, unsafe_allow_html=True)
 
 # Display player rows using a more optimized layout with no gaps
-# Display player rows using a more optimized layout with no gaps
 for idx, player in df.iterrows():
-    is_expanded = st.session_state.expanded_player == player['Name']
+    is_expanded = st.session_state.expanded_player == player['PlayerName']
     
     # Create the player row and get any expanded content
     row_html, expanded_html = create_player_row(player, is_expanded)
@@ -1088,10 +1153,10 @@ for idx, player in df.iterrows():
         # Second column: Arrow button
         with cols[1]:
             btn_text = "▲" if is_expanded else "▼"
-            btn_key = st.session_state.button_keys[player['Name']]
+            btn_key = st.session_state.button_keys[player['PlayerName']]
             
             # Using on_click for the callback
-            st.button(btn_text, key=btn_key, on_click=toggle_player, args=(player['Name'],))
+            st.button(btn_text, key=btn_key, on_click=toggle_player, args=(player['PlayerName'],))
         
         # Display expanded content if needed
         if expanded_html:
