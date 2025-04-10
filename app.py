@@ -298,7 +298,8 @@ border-right: 1px solid #FF6B00;
         display: flex;
         align-items: center;
         padding: 5px 0;
-        border-bottom: 2px solid #eaeaea;
+        border: 1px solid #c0c0c0 ;
+
         transition: all 0.2s ease;
         height: 45px !important; /* Reduced height for more compact rows */
         margin: 0; /* Remove any margin */
@@ -320,6 +321,7 @@ border-right: 1px solid #FF6B00;
         text-transform: uppercase;
         font-weight: 500;
         color: #333;
+
         box-sizing: border-box !important;
     }
     
@@ -999,7 +1001,7 @@ def display_expanded_player_details(player):
         font-size: 18px;
         font-weight: 700;
         margin-bottom: 15px;
-        border-bottom: 2px solid #FF6B00;
+        border-bottom: 1px solid #FF6B00;
         padding-bottom: 8px;
     }
     
