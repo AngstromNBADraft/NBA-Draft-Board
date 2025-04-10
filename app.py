@@ -41,13 +41,7 @@ def add_banner():
         vertical-align: middle !important;
     }
     
-    /* Fix filter positioning */
-    .stSelectbox {
-        margin-top: 0 !important;
-        width: 150px !important;
-        float: right !important;
-        margin-right: 20px !important;
-    }
+
     
     /* Clear float after the title/filter row */
     .filter-row:after {
@@ -84,7 +78,7 @@ def add_banner():
     
     /* Fix dropdown container */
     div[data-baseweb="select"] {
-        max-width: 150px !important;
+        max-width: 120px !important;
         border: 1px solid #646E78  ;
         border-radius: 8px !important;
     }
@@ -117,8 +111,7 @@ def add_banner():
 }
 /* Style for highlighting 2025 draft rows */
 .highlighted-2025 {
-    background-color: #FFD0A0 !important; /* Darker orange background */
-    box-shadow: 0 1px 3px rgba(255, 107, 0, 0.1) !important; /* Subtle orange shadow */
+    background-color: #EEEEEE  !important;
 }
 
 .highlighted-2025:hover {
@@ -138,7 +131,7 @@ def add_banner():
     display: inline-block;
     background-color: #FF6B00;
     color: white;
-    font-size: 8px;
+    font-size: 10px;
     font-weight: bold;
     padding: 2px 2px;
     border-radius: 4px;
@@ -721,7 +714,7 @@ def get_player_details(player_name):
 # Set up the page configuration
 st.set_page_config(
     page_title="NBA Draft Big Board",
-    page_icon="🏀",
+    page_icon= "https://sdmntprsouthcentralus.oaiusercontent.com/files/00000000-d2a4-61f7-8c44-cb4e5e5deecd/raw?se=2025-04-10T13%3A29%3A38Z&sp=r&sv=2024-08-04&sr=b&scid=f9701198-a805-540b-a3df-ea5d37151a8f&skoid=0abefe37-d2bd-4fcb-bc88-32bccbef6f7d&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-10T10%3A34%3A17Z&ske=2025-04-11T10%3A34%3A17Z&sks=b&skv=2024-08-04&sig=LeqbJbRUsH66mBcMshsjJhmMsfOF/wAJWZ1ODfhXpDo%3D",
     layout="centered"  # Use centered layout for better control
 )
 
@@ -776,6 +769,7 @@ add_who_we_are_pure_streamlit()
 
 # Get the data
 df = get_draft_data()
+df_original = df.copy()
 
 # Sort the dataframe by Rank if it exists
 if 'Rank' in df.columns:
@@ -812,9 +806,11 @@ st.markdown("""
     /* Just minimal adjustments to position the filter */
     .stSelectbox {
         margin-top: -20px !important;
-        width: 220px !important;
-        margin-right: -70px !important;
+        max-width: 250px !important;
     }
+
+
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -823,7 +819,7 @@ st.markdown("""
 title_container = st.container()
 with title_container:
     st.markdown('<div class="filter-row">', unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([0.65, 0.175, 0.175])  # Adjusted column widths for title and two filters
+    col1, col2, col3, col4 = st.columns([0.4, 0.1, 0.1, 0.1])
     
     with col1:
         st.markdown('<div class="big-board-title">NBA DRAFT BIG BOARD</div>', unsafe_allow_html=True)
@@ -832,7 +828,7 @@ with title_container:
         # Fetch unique draft years and sort them
         all_drafts = sorted(df['Draft'].unique().tolist())
         selected_draft = st.selectbox(
-            "Draft Year",
+            "Year",
             ["ALL"] + all_drafts,
             index=0,
             key="draft_filter",
@@ -848,6 +844,20 @@ with title_container:
             index=0,
             key="position_filter",
         )
+    with col4:
+    # Get all unique player names for the autocomplete dropdown
+        all_player_names = sorted(df_original['PlayerName'].unique().tolist())
+    
+    # Add an "ALL" option at the beginning
+        player_options = ["ALL"] + all_player_names
+    
+    # Player search box with autocomplete
+        selected_player = st.selectbox(
+        "Search",
+        options=player_options,
+        index=0,
+        key="player_search"
+    )
     
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -857,6 +867,10 @@ if selected_draft != 'ALL':
 
 if selected_position != 'ALL':
     df = df[df['PositionDetail'] == selected_position]
+
+if selected_player != "ALL":
+    # Filter for the exact player name
+    df = df[df['PlayerName'] == selected_player]
 
 # Wrap the table in a fixed-width container
 st.markdown('<div class="table-container">', unsafe_allow_html=True)
@@ -1050,7 +1064,7 @@ def display_expanded_player_details(player):
     
     
     # Create a row with 4 columns
-    col_img, col_bio, col_comp, col_rank, col_rating = st.columns([1, 1.2, 1, 1, 1])
+    col_img, col_bio = st.columns([.5,.5])
     
     with col_img:
         # Player image
@@ -1060,136 +1074,10 @@ def display_expanded_player_details(player):
         # Player name under image
         st.markdown(f"<div style='text-align: center; font-weight: bold; font-size: 18px; margin-top: 10px;'>{player['PlayerName']}</div>", 
                    unsafe_allow_html=True)
-
-    
     with col_bio:
-        # Biometrics section with horizontal bars - more compact
-        st.markdown('<h4 style="color: #0E1726; font-weight: 700; margin-bottom: 10px; border-bottom: 2px solid #FF6B00; padding-bottom: 5px;">Biometrics</h4>', unsafe_allow_html=True)
-        biometrics = {
-            "Height": {"value": player['Height'], "percentile": 89, "display": player['Height']},
-            "Weight": {"value": f"{180 + player['Rank'] % 40} lbs", "percentile": 72, "display": f"{180 + player['Rank'] % 40} lbs"},
-            "Wingspan": {"value": f"{6 + (player['Rank'] % 3)}'{ 8 + (player['Rank'] % 4)}\"", "percentile": 94, "display": f"{6 + (player['Rank'] % 3)}'{ 8 + (player['Rank'] % 4)}\""},
-            "Standing Reach": {"value": f"{8 + (player['Rank'] % 2)}'{ 2 + (player['Rank'] % 6)}\"", "percentile": 87, "display": f"{8 + (player['Rank'] % 2)}'{ 2 + (player['Rank'] % 6)}\""},
-            "Vertical": {"value": f"{30 + (player['Rank'] % 15)} inches", "percentile": 81, "display": f"{30 + (player['Rank'] % 15)} in"}
-        }
+        pass
+   
         
-        for key, data in biometrics.items():
-            # Get the percentile
-            percentile = data["percentile"]
-            
-            # Calculate color based on percentile
-            # Blue for all (matching the image provided)
-            color = f"rgb(107, 124, 180)"  # Blue
-            
-            # Create the metric visualization - more compact
-            st.markdown(f"""
-            <div style="margin-bottom: 8px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                    <span style="font-weight: 600; color: #555; font-size: 14px;">{key}</span>
-                    <span style="font-weight: 700; color: #333; font-size: 14px;">{data['display']}</span>
-                </div>
-                <div style="height: 18px; background-color: #e0e0e0; border-radius: 4px; position: relative;">
-                    <div style="position: absolute; left: 5px; top: 1px; font-size: 11px; font-weight: 600; color: white; z-index: 2;">{percentile}</div>
-                    <div style="width: {percentile}%; height: 100%; background-color: {color}; border-radius: 4px;"></div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-    
-    with col_comp:
-        # Player Comparisons - more compact
-        st.markdown('<h4 style="color: #0E1726; font-weight: 700; margin-bottom: 10px; border-bottom: 2px solid #FF6B00; padding-bottom: 5px;">Comparisons</h4>', unsafe_allow_html=True)
-        player_comparisons = [
-            "Paolo Banchero",
-            "Zion Williamson",
-            "Jabari Smith Jr.",
-            "Chet Holmgren",
-            "Victor Wembanyama"
-        ]
-        
-        for comp in player_comparisons:
-            st.markdown(f'<div style="padding: 4px 0; border-bottom: 1px solid #eaeaea; font-size: 14px;">{comp}</div>', unsafe_allow_html=True)
-    
-    with col_rank:
-        # 3 Year Draft Rank - more compact with 7 players and rank in orange box
-        st.markdown(f'<h4 style="color: #0E1726; font-weight: 700; margin-bottom: 10px; border-bottom: 2px solid #FF6B00; padding-bottom: 5px;">3-Year Mock <span style="display: inline-block; background-color: #FF6B00; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px;">#{player["Rank"]}</span></h4>', unsafe_allow_html=True)
-        
-        # Generate a list of 7 players with current player in the middle
-        current_rank = player['Rank']
-        player_names = {
-            current_rank-3: "Donovan Clingan",
-            current_rank-2: "Matas Buzelis",
-            current_rank-1: "Stephon Castle",
-            current_rank: player['PlayerName'],      # Current player
-            current_rank+1: "Ron Holland",
-            current_rank+2: "Nikola Topic",
-            current_rank+3: "Zaccharie Risacher"
-        }
-        
-        # Create draft ranks list
-        draft_ranks = []
-        for i in range(current_rank-3, current_rank+4):
-            # Use the player name from the dictionary, or a generic name if not found
-            name = player_names.get(i, f"Player {i}")
-            draft_ranks.append({"rank": i, "name": name})
-        
-        for draft_player in draft_ranks:
-            if draft_player["name"] == player['PlayerName']:
-                st.markdown(f"""
-                <div style="padding: 4px 0; border-bottom: 1px solid #eaeaea; font-size: 14px; color: #FF6B00; font-weight: 700;">
-                    #{draft_player['rank']} {draft_player['name']}
-                </div>
-                """, unsafe_allow_html=True)
-            else:
-                st.markdown(f"""
-                <div style="padding: 4px 0; border-bottom: 1px solid #eaeaea; font-size: 14px;">
-                    #{draft_player['rank']} {draft_player['name']}
-                </div>
-                """, unsafe_allow_html=True)
-    
-    with col_rating:
-        # Player Ratings - more compact
-        st.markdown('<h4 style="color: #0E1726; font-weight: 700; margin-bottom: 10px; border-bottom: 2px solid #FF6B00; padding-bottom: 5px;">Qualitative</h4>', unsafe_allow_html=True)
-        
-        # Use actual offensive and defensive ratings from player data
-        offense_rating = 70 + int(player['Rank']) % 30
-        defense_rating = 65 + int(player['Rank']) % 35
-        
-        ratings = {
-            "Offense": {"percentile": offense_rating, "display": f"{offense_rating}.0"},
-            "Defense": {"percentile": defense_rating, "display": f"{defense_rating}.0"},
-            "Athleticism": {"percentile": 76, "display": "76.0"},
-            "Competitiveness": {"percentile": 71, "display": "71.5"},
-            "Basketball IQ": {"percentile": 73, "display": "73.0"},
-        }
-        
-        for category, data in ratings.items():
-            percentile = data["percentile"]
-            
-            # Calculate color based on percentile - matching the image
-            if percentile < 40:
-                # Red for low percentiles
-                color = f"rgb(203, 68, 74)"
-            elif percentile < 60:
-                # Gray for middle percentiles
-                color = f"rgb(130, 130, 130)"
-            else:
-                # Blue for high percentiles
-                color = f"rgb(107, 124, 180)"
-                
-            # Create the metric visualization - more compact
-            st.markdown(f"""
-            <div style="margin-bottom: 8px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                    <span style="font-weight: 600; color: #555; font-size: 14px;">{category}</span>
-                    <span style="font-weight: 700; color: #333; font-size: 14px;">{data['display']}</span>
-                </div>
-                <div style="height: 18px; background-color: #e0e0e0; border-radius: 4px; position: relative;">
-                    <div style="position: absolute; left: 5px; top: 1px; font-size: 11px; font-weight: 600; color: white; z-index: 2;">{percentile}</div>
-                    <div style="width: {percentile}%; height: 100%; background-color: {color}; border-radius: 4px;"></div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-
 # Display player rows using a more optimized layout with no gaps
 for idx, player in df.iterrows():
     is_expanded = st.session_state.expanded_player == player['PlayerName']
