@@ -115,6 +115,36 @@ def add_banner():
 .stApp {
     background: #E5E8ED    !important; /* Same blue background as the first app */
 }
+/* Style for highlighting 2025 draft rows */
+.highlighted-2025 {
+    background-color: #FFD0A0 !important; /* Darker orange background */
+    box-shadow: 0 1px 3px rgba(255, 107, 0, 0.1) !important; /* Subtle orange shadow */
+}
+
+.highlighted-2025:hover {
+    background-color: #c8cad2 !important; /* Same hover style as normal rows */
+}
+
+/* If row is both expanded and highlighted */
+.player-row.expanded.highlighted-2025 {
+    background-color: #FFA566 !important; /* Darker orange for expanded state */
+    border-left: 4px solid #FF6B00 !important;
+    border-bottom: none !important; /* Remove bottom border for expanded rows */
+}
+
+/* Add a Draft 2025 indicator badge */
+.highlighted-2025 .name-cell:after {
+    content: "2025";
+    display: inline-block;
+    background-color: #FF6B00;
+    color: white;
+    font-size: 8px;
+    font-weight: bold;
+    padding: 2px 2px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
 
 /* Update the app container to match the styling */
 [data-testid="stAppViewContainer"] {
@@ -404,7 +434,7 @@ border-right: 2px solid #eaeaea;
     margin: 7px 0 2px 0 !important;
     font-size: 12px !important;      /* Even smaller font */
     position: absolute !important;
-    right: 4px !important;
+    right: 10px !important;
     line-height: 1.65 !important;      /* Added to reduce height */
     overflow: hidden !important;    /* Ensures content doesn't expand button */
 }
@@ -781,7 +811,7 @@ st.markdown("""
     
     /* Just minimal adjustments to position the filter */
     .stSelectbox {
-        margin-top: -24px !important;
+        margin-top: -20px !important;
         width: 220px !important;
         margin-right: -70px !important;
     }
@@ -796,7 +826,7 @@ with title_container:
     col1, col2, col3 = st.columns([0.65, 0.175, 0.175])  # Adjusted column widths for title and two filters
     
     with col1:
-        st.markdown('<div class="big-board-title">2025 NBA DRAFT BIG BOARD</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-board-title">NBA DRAFT BIG BOARD</div>', unsafe_allow_html=True)
     
     with col2:
         # Fetch unique draft years and sort them
@@ -855,8 +885,15 @@ def toggle_player(player_name):
     else:
         st.session_state.expanded_player = player_name
 
-def create_player_row(player, expanded):
-    row_class = "player-row expanded" if expanded else "player-row"
+def create_player_row(player, expanded, selected_draft):
+    # Only highlight 2025 players when "ALL" is selected
+    is_2025_draft = player['Draft'] == 2025 and selected_draft == "ALL"
+    
+    # Add a special class for 2025 draft players
+    if is_2025_draft:
+        row_class = "player-row expanded highlighted-2025" if expanded else "player-row highlighted-2025"
+    else:
+        row_class = "player-row expanded" if expanded else "player-row"
    
     # Function to get color based on score (0-100 scale where 100 is best)
     def get_color_for_rank(score):
@@ -887,6 +924,7 @@ def create_player_row(player, expanded):
             return "#d73027"  # Strong red
         else:  # Awful (0-10)
             return "#a50026"  # Dark red   
+            
     # Write player row HTML - fixed width
     html = f"""
     <div class="{row_class}">
@@ -1136,8 +1174,8 @@ def display_expanded_player_details(player):
 for idx, player in df.iterrows():
     is_expanded = st.session_state.expanded_player == player['PlayerName']
     
-    # Create the player row and get any expanded content
-    row_html, expanded_html = create_player_row(player, is_expanded)
+    # Create the player row and get any expanded content - now passing the selected_draft
+    row_html, expanded_html = create_player_row(player, is_expanded, selected_draft)
     
     # Create a container with no padding/margin
     row_container = st.container()
