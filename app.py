@@ -897,33 +897,53 @@ def create_player_row(player, expanded, selected_draft):
    
     # Function to get color based on score (0-100 scale where 100 is best)
     def get_color_for_rank(score):
-        # Check if score is None or NaN
-        if pd.isna(score) or score is None:
-            return "#c2c2c2"  # Gray for missing values
-            
-        # Normalize score to 0-1 scale where 1 is best (100) and 0 is worst (0)
-        normalized = min(1.0, max(0.0, float(score) / 100))
-       
-        if normalized > 0.9:  # Elite (90-100)
-            return "#005a32"  # Deep forest green
-        elif normalized > 0.8:  # Excellent (80-90)
-            return "#238b45"  # Strong green
-        elif normalized > 0.7:  # Very good (70-80)
-            return "#41ab5d"  # Medium green
-        elif normalized > 0.6:  # Good (60-70)
-            return "#78c679"  # Light green
-        elif normalized > 0.5:  # Above average (50-60)
-            return "#c2e699"  # More saturated pale green
-        elif normalized > 0.4:  # Average (40-50)
-            return "#fee08b"  # Darker yellow
-        elif normalized > 0.3:  # Below average (30-40)
-            return "#fdae61"  # Darker orange
-        elif normalized > 0.2:  # Poor (20-30)
-            return "#f46d43"  # Stronger orange-red
-        elif normalized > 0.1:  # Very poor (10-20)
-            return "#d73027"  # Strong red
-        else:  # Awful (0-10)
-            return "#a50026"  # Dark red   
+       # Check if score is None or NaN
+       if pd.isna(score) or score is None:
+           return "#c2c2c2"  # Gray for missing values
+           
+       # Normalize score to 0-1 scale where 1 is best (100) and 0 is worst (0)
+       normalized = min(1.0, max(0.0, float(score) / 100))
+      
+       if normalized > 0.95:      # Elite (95-100)
+           return "#00441b"      # Darkest green
+       elif normalized > 0.90:    # Excellent+ (90-95)
+           return "#005a32"      # Very dark green
+       elif normalized > 0.85:    # Excellent (85-90)
+           return "#238b45"      # Dark green
+       elif normalized > 0.80:    # Very good+ (80-85)
+           return "#2d9e4c"      # Medium-dark green
+       elif normalized > 0.75:    # Very good (75-80)
+           return "#41ab5d"      # Medium green
+       elif normalized > 0.70:    # Good+ (70-75)
+           return "#5ab971"      # Medium-light green
+       elif normalized > 0.65:    # Good (65-70)
+           return "#78c679"      # Light green
+       elif normalized > 0.60:    # Above average+ (60-65)
+           return "#97d494"      # Very light green
+       elif normalized > 0.55:    # Above average (55-60)
+           return "#c2e699"      # Pale green
+       elif normalized > 0.50:    # Average+ (50-55)
+           return "#e5f5e0"      # Almost white green
+       elif normalized > 0.45:    # Average (45-50)
+           return "#fff7bc"      # Very pale yellow
+       elif normalized > 0.40:    # Below average+ (40-45)
+           return "#fee08b"      # Light yellow
+       elif normalized > 0.35:    # Below average (35-40)
+           return "#fec44f"      # Dark yellow
+       elif normalized > 0.30:    # Poor+ (30-35)
+           return "#fdae61"      # Light orange
+       elif normalized > 0.25:    # Poor (25-30)
+           return "#f46d43"      # Medium orange
+       elif normalized > 0.20:    # Very poor+ (20-25)
+           return "#e93f3a"      # Light red
+       elif normalized > 0.15:    # Very poor (15-20)
+           return "#d73027"      # Medium red
+       elif normalized > 0.10:    # Awful+ (10-15)
+           return "#bd0026"      # Dark red
+       elif normalized > 0.05:    # Awful (5-10)
+           return "#a50026"      # Very dark red
+       else:                     # Terrible (0-5)
+           return "#800026"      # Extremely dark red  
             
     # Write player row HTML - fixed width
     html = f"""
