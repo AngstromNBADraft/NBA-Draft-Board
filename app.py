@@ -150,6 +150,13 @@ border-right: 1px solid #FF6B00;
     margin: 0 auto !important;
     margin-top: 60px !important; /* Adjusted for the existing header */
 }
+.spacer-cell {
+    width: 15px !important;
+    min-width: 15px !important;
+    max-width: 15px !important;
+    background-color: transparent !important;
+    border: none !important;
+}
     
     .banner-text-main {
         font-weight: 700;
@@ -385,9 +392,9 @@ font-weight: 500 !important;
     }
     
     .stat-cell {
-        width: 70px !important;
-        min-width: 70px !important;
-        max-width: 70px !important;
+        width: 65px !important;
+        min-width: 65px !important;
+        max-width: 65px !important;
         text-align: center;
         font-size: 13px;
 
@@ -396,11 +403,11 @@ font-weight: 500 !important;
 
     }
 .stat-cell-ranked {
-    width: 70px !important;
-    min-width: 70px !important;
-    max-width: 70px !important;
+    width: 65px !important;
+    min-width: 65px !important;
+    max-width: 65px !important;
     text-align: center;
-    padding: 5px 3px !important;
+    padding: 0px 3px !important;
     font-size: 13px;
     font-weight: 600 !important;
     box-sizing: border-box !important;
@@ -900,6 +907,7 @@ st.markdown("""
     <div class="player-cell stat-cell">NBA</div>
     <div class="player-cell stat-cell">OScore</div>
     <div class="player-cell stat-cell">DScore</div>
+    <div class="player-cell spacer-cell"></div> 
     <div class="player-cell stat-cell">Score</div>
     <div class="player-cell arrow-cell"></div>
 </div>
@@ -973,6 +981,7 @@ def create_player_row(player, expanded, selected_draft):
         <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['NBA'])}">{player['NBA']}</div>
         <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['OScore'])};">{player['OScore']}</div>
         <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['DScore'])}">{player['DScore']}</div>
+        <div class="player-cell spacer-cell"></div> 
         <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['Score'])}">{player['Score']}</div>
     </div>
     """
