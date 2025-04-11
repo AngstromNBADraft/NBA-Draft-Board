@@ -27,19 +27,7 @@ def add_banner():
     }
 
     /* Fix title and filter alignment */
-    .big-board-title {
-        font-size: 34px !important;
-        font-weight: 800;
-        color: #0E1726;
-        letter-spacing: 1px;
-        margin-bottom: 0px !important;
-        text-transform: uppercase;
-        border-bottom: 3px solid #FF6B00;
-        padding-bottom: 8px;
-        width: 75% !important; /* Take only 75% of the row width */
-        display: inline-block !important;
-        vertical-align: middle !important;
-    }
+
     
 
     
@@ -111,7 +99,7 @@ def add_banner():
 }
 /* Style for highlighting 2025 draft rows */
 .highlighted-2025 {
-    background-color: #EEEEEE  !important;
+    background-color: #FFDEC3   !important;
 }
 
 .highlighted-2025:hover {
@@ -135,7 +123,7 @@ def add_banner():
     font-weight: bold;
     padding: 2px 2px;
     border-radius: 4px;
-    margin-left: 8px;
+    margin-left: 6px;
     vertical-align: middle;
 }
 
@@ -251,21 +239,7 @@ border-right: 1px solid #FF6B00;
         line-height: 1.4;
     }
     
-    /* Modern table styling - updated to orange */
-    .big-board-title {
-        font-size: 32px;
-        font-weight: 800;
-        color: #0E1726;
-        letter-spacing: 1px;
-        margin-bottom: 0px !important;
-        text-transform: uppercase;
-        border-bottom: 3px solid #FF6B00;
-        padding-bottom: 0px;
-        max-width: 950px;
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-    }
+
     
     /* Table header styling */
     .table-header {
@@ -315,7 +289,7 @@ border-right: 1px solid #FF6B00;
     }
     
     .player-row:hover {
-        background-color: #c8cad2;
+        background-color: #EEEEEE;
     }
     
     .player-row.expanded {
@@ -788,6 +762,10 @@ st.markdown('<div class="main-container">', unsafe_allow_html=True)
 add_who_we_are_pure_streamlit()
 
 # Get the data
+# Replace the current title and filter section with this updated version
+# that properly defines selected_draft before using it
+
+# Get the data first
 df = get_draft_data()
 df_original = df.copy()
 
@@ -808,42 +786,90 @@ if 'button_keys' not in st.session_state:
     }
 
 # Create title and filter section with default Streamlit styling
+# Place this CSS in your existing style section, for example in the title styling block:
+
 st.markdown("""
 <style>
     /* Title styling */
     .big-board-title {
-        font-size: 28px;
-        font-weight: 800;
-        color: #0E1726;
-        letter-spacing: 1px;
-        margin-bottom: 0 !important;
-        text-transform: uppercase;
-        padding-bottom: 8px;
-        border-bottom: 5px solid #FF6B00;
-        width: 900px !important;
-    }
+    /* Size and typography */
+    font-size: 29px !important;
+    font-weight: 800;
+    color: #0E1726;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    
+    /* Spacing and borders */
+    margin-bottom: 0 !important;
+    margin-top: 5px !important;
+    padding-bottom: 15px;
+    border-bottom: 7px solid #FF6B00;
+    
+    /* Display and dimensions */
+    max-width: 950px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block !important;
+    vertical-align: middle !important;
+}
     
     /* Just minimal adjustments to position the filter */
     .stSelectbox {
-        margin-top: -20px !important;
+        margin-top: -10px !important;
         max-width: 250px !important;
     }
-
-
-
+    
+    /* Make selectbox containers shorter */
+    div[data-baseweb="select"] {
+        max-width: 120px !important;
+        border: 1px solid #646E78 !important;
+        border-radius: 8px !important;
+        height: 32px !important;  /* Reduced height */
+    }
+    
+    /* Adjust the internal elements of the selectbox */
+    div[data-baseweb="select"] > div {
+        height: 30px !important;  /* Reduced height */
+        min-height: 30px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+    
+    /* Adjust the selectbox text */
+    div[data-baseweb="select"] span {
+        font-size: 13px !important;  /* Smaller font size */
+        line-height: 1 !important;  /* Tighter line height */
+    }
+    
+    /* Adjust the dropdown arrow */
+    div[data-baseweb="select"] svg {
+        height: 16px !important;
+        width: 16px !important;
+    }
+    
+    /* Reduce the label height and adjust position */
+    .stSelectbox label {
+        font-size: 13px !important;
+        margin-bottom: 2px !important;
+        padding-top: 0 !important;
+        line-height: 1 !important;
+    }
+    
+    /* Remove extra padding in the container */
+    .stSelectbox > div {
+        padding-bottom: 5px !important;
+        padding-top: 0 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
-
-# Create the title and filter row
 # Create the title and filter row
 title_container = st.container()
 with title_container:
     st.markdown('<div class="filter-row">', unsafe_allow_html=True)
     col1, col2, col3, col4 = st.columns([0.4, 0.1, 0.1, 0.1])
     
-    with col1:
-        st.markdown('<div class="big-board-title">NBA DRAFT BIG BOARD</div>', unsafe_allow_html=True)
-    
+    # First get the filter values
     with col2:
         # Fetch unique draft years and sort them
         all_drafts = sorted(df['Draft'].unique().tolist())
@@ -864,20 +890,30 @@ with title_container:
             index=0,
             key="position_filter",
         )
+    
     with col4:
-    # Get all unique player names for the autocomplete dropdown
+        # Get all unique player names for the autocomplete dropdown
         all_player_names = sorted(df_original['PlayerName'].unique().tolist())
-    
-    # Add an "ALL" option at the beginning
+        
+        # Add an "ALL" option at the beginning
         player_options = ["ALL"] + all_player_names
-    
-    # Player search box with autocomplete
+        
+        # Player search box with autocomplete
         selected_player = st.selectbox(
-        "Search",
-        options=player_options,
-        index=0,
-        key="player_search"
-    )
+            "Search",
+            options=player_options,
+            index=0,
+            key="player_search"
+        )
+    
+    # Now display the title with the selected_draft
+    # Create the title with the selected_draft year in orange
+    with col1:
+        if selected_draft == "ALL":
+            st.markdown('<div class="big-board-title"><span style="color: #FF6B00;">5-YEAR</span> NBA DRAFT BIG BOARD</div>', unsafe_allow_html=True)
+        else:
+            # Using span with orange color for the year
+            st.markdown(f'<div class="big-board-title"><span style="color: #FF6B00;">{selected_draft}</span> NBA DRAFT BIG BOARD</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -892,6 +928,19 @@ if selected_player != "ALL":
     # Filter for the exact player name
     df = df[df['PlayerName'] == selected_player]
 
+# Reset the ranking if a specific draft year is selected
+if selected_draft != 'ALL':
+    # Create a temporary copy of the dataframe to preserve original ranks
+    temp_df = df.copy()
+    # Sort by original rank
+    temp_df = temp_df.sort_values('Rank')
+    # Add a new column with consecutive numbering starting from 1
+    temp_df['DisplayRank'] = range(1, len(temp_df) + 1)
+    # Replace the dataframe with our temporary one
+    df = temp_df
+else:
+    # If showing all years, use the original Rank
+    df['DisplayRank'] = df['Rank']
 # Wrap the table in a fixed-width container
 st.markdown('<div class="table-container">', unsafe_allow_html=True)
 
@@ -971,20 +1020,20 @@ def create_player_row(player, expanded, selected_draft):
             
     # Write player row HTML - fixed width with black bold text
     html = f"""
-    <div class="{row_class}">
-        <div class="player-cell rank-cell">{player['Rank']}</div>
-        <div class="player-cell name-cell">{player['PlayerName']}</div>
-        <div class="player-cell pos-cell">{player['PositionDetail']}</div>
-        <div class="player-cell height-cell">{player['Height']}</div>
-        <div class="player-cell class-cell">{player['PlayerClass']}</div>
-        <div class="player-cell school-cell">{player['PlayerTeam']}</div>
-        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['NBA'])}">{player['NBA']}</div>
-        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['OScore'])};">{player['OScore']}</div>
-        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['DScore'])}">{player['DScore']}</div>
-        <div class="player-cell spacer-cell"></div> 
-        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['Score'])}">{player['Score']}</div>
-    </div>
-    """
+<div class="{row_class}">
+    <div class="player-cell rank-cell">{player['DisplayRank']}</div>
+    <div class="player-cell name-cell">{player['PlayerName']}</div>
+    <div class="player-cell pos-cell">{player['PositionDetail']}</div>
+    <div class="player-cell height-cell">{player['Height']}</div>
+    <div class="player-cell class-cell">{player['PlayerClass']}</div>
+    <div class="player-cell school-cell">{player['PlayerTeam']}</div>
+    <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['NBA'])}">{player['NBA']}</div>
+    <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['OScore'])};">{player['OScore']}</div>
+    <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['DScore'])}">{player['DScore']}</div>
+    <div class="player-cell spacer-cell"></div> 
+    <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['Score'])}">{player['Score']}</div>
+</div>
+"""
    
     # If expanded, also return the expanded content with new professional design
     if expanded:
