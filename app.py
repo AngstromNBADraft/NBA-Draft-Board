@@ -99,7 +99,7 @@ def add_banner():
 }
 /* Style for highlighting 2025 draft rows */
 .highlighted-2025 {
-    background-color: #FFDEC3   !important;
+    background-color: #EEEEEE   !important;
 }
 
 .highlighted-2025:hover {
@@ -995,28 +995,38 @@ def create_player_row(player, expanded, selected_draft):
         # Normalize score to 0-1 scale where 1 is best (100) and 0 is worst (0)
         normalized = min(1.0, max(0.0, float(score) / 100))
         
-        if normalized > 0.90:      # Excellent (90-100)
-            return "#7cb342"      # Muted green
-        elif normalized > 0.80:    # Very good (80-90)
-            return "#8bc34a"      # Lighter muted green
-        elif normalized > 0.70:    # Good (70-80)
-            return "#9ccc65"      # Pale green
-        elif normalized > 0.60:    # Above average (60-70)
-            return "#aed581"      # Very pale green
+        if normalized > 0.95:      # Excellent (95-100)
+           return "#7cb342"      # Muted green
+        elif normalized > 0.90:    # Very good (90-95)
+           return "#8bc34a"      # Lighter muted green
+        elif normalized > 0.85:    # Very good (85-90)
+           return "#9ccc65"      # Pale green
+        elif normalized > 0.80:    # Good (80-85)
+           return "#a4d368"      # Light green
+        elif normalized > 0.75:    # Good (75-80)
+           return "#aed581"      # Very pale green
+        elif normalized > 0.70:    # Above average (70-75)
+           return "#b7de8c"      # Very pale green
+        elif normalized > 0.65:    # Above average (65-70)
+           return "#c1e597"      # Nearly neutral green
+        elif normalized > 0.60:    # Above average (60-65)
+           return "#caea9f"      # Very light green
         elif normalized > 0.55:    # Slightly above average (55-60)
-            return "#c5e1a5"      # Nearly neutral green
-        elif normalized > 0.45:    # Average (45-55)
-            return "#e0e0e0"      # Neutral gray
+           return "#d3efac"      # Extremely pale green
+        elif normalized > 0.50:    # Slightly above average (50-55)
+           return "#dcf4b9"      # Almost white-green
+        elif normalized > 0.45:    # Average (45-50)
+           return "#e0e0e0"      # Neutral gray
         elif normalized > 0.40:    # Slightly below average (40-45)
-            return "#ffccbc"      # Nearly neutral red
+           return "#ffccbc"      # Nearly neutral red
         elif normalized > 0.30:    # Below average (30-40)
-            return "#ffab91"      # Very pale red
+           return "#ffab91"      # Very pale red
         elif normalized > 0.20:    # Poor (20-30)
-            return "#ff8a65"      # Pale red
+           return "#ff8a65"      # Pale red
         elif normalized > 0.10:    # Very poor (10-20)
-            return "#ff7043"      # Light red
+           return "#ff7043"      # Light red
         else:                      # Terrible (0-10)
-            return "#ff5722"      # Muted red
+           return "#ff5722"      # Muted red
             
     # Write player row HTML - fixed width with black bold text
     html = f"""
