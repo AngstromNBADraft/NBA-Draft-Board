@@ -271,7 +271,7 @@ border-right: 1px solid #FF6B00;
         letter-spacing: 0.5px;
         font-size: 13px;
         padding: 10px 0;
-        border-radius: 4px 4px 0 0;
+        border-radius: 6px 6px 0 0;
         margin-top: -10px !important;
         margin-bottom: 0 !important; /* Remove margin */
         width: 950px !important; /* Fixed width */
@@ -319,7 +319,6 @@ border-right: 1px solid #FF6B00;
         padding: 0 8px;
         font-size: 13px;
         text-transform: uppercase;
-        font-weight: 500;
         color: #333;
 
         box-sizing: border-box !important;
@@ -340,7 +339,7 @@ border-right: 1px solid #FF6B00;
         width: 210px !important;
         min-width: 210px !important;
         max-width: 210px !important;
-        font-weight: 700;
+        font-weight: 700 !important;
         letter-spacing: 0.5px;
         box-sizing: border-box !important;
     }
@@ -350,9 +349,10 @@ border-right: 1px solid #FF6B00;
     min-width: 50px !important;
     max-width: 50px !important;
     text-align: left;
+    font-weight: 500 !important;
     color: #555;
     box-sizing: border-box !important;
-    margin-right: 20px !important;
+    margin-right: 0px !important;
 }
 
 .height-cell {
@@ -361,6 +361,7 @@ border-right: 1px solid #FF6B00;
     max-width: 50px !important;
     text-align: center;
     color: #555;
+font-weight: 500 !important;
     box-sizing: border-box !important;
 }
     
@@ -369,8 +370,9 @@ border-right: 1px solid #FF6B00;
         min-width: 135px !important;
         max-width: 135px !important;
         text-align: center;
+font-weight: 500 !important;
         box-sizing: border-box !important;
-border-right: 2px solid #eaeaea;
+
     }
     
     .class-cell {
@@ -378,6 +380,7 @@ border-right: 2px solid #eaeaea;
         min-width: 50px !important;
         max-width: 50px !important;
         text-align: center;
+font-weight: 500 !important;
         box-sizing: border-box !important;
     }
     
@@ -387,21 +390,29 @@ border-right: 2px solid #eaeaea;
         max-width: 70px !important;
         text-align: center;
         font-size: 13px;
-        box-sizing: border-box !important;
-border-right: 2px solid #eaeaea;
+
+
+
+
     }
 .stat-cell-ranked {
     width: 70px !important;
     min-width: 70px !important;
     max-width: 70px !important;
     text-align: center;
+    padding: 5px 3px !important;
     font-size: 13px;
+    font-weight: 600 !important;
     box-sizing: border-box !important;
-    border-right: 2px solid #eaeaea;
-    font-weight: 700 !important;
-    color: white !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important; /* subtle border */
-    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.7) !important; /* stronger text shadow */
+    color: black !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Optional hover effect for better interactivity */
+.stat-cell-ranked:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
     
     .arrow-cell {
@@ -429,7 +440,7 @@ border-right: 2px solid #eaeaea;
     margin: 7px 0 2px 0 !important;
     font-size: 12px !important;      /* Even smaller font */
     position: absolute !important;
-    right: 10px !important;
+    right: 20px !important;
     line-height: 1.65 !important;      /* Added to reduce height */
     overflow: hidden !important;    /* Ensures content doesn't expand button */
 }
@@ -901,6 +912,13 @@ def toggle_player(player_name):
     else:
         st.session_state.expanded_player = player_name
 
+# Function to toggle player expansion
+def toggle_player(player_name):
+    if st.session_state.expanded_player == player_name:
+        st.session_state.expanded_player = None
+    else:
+        st.session_state.expanded_player = player_name
+
 def create_player_row(player, expanded, selected_draft):
     # Only highlight 2025 players when "ALL" is selected
     is_2025_draft = player['Draft'] == 2025 and selected_draft == "ALL"
@@ -913,55 +931,37 @@ def create_player_row(player, expanded, selected_draft):
    
     # Function to get color based on score (0-100 scale where 100 is best)
     def get_color_for_rank(score):
-       # Check if score is None or NaN
-       if pd.isna(score) or score is None:
-           return "#c2c2c2"  # Gray for missing values
-           
-       # Normalize score to 0-1 scale where 1 is best (100) and 0 is worst (0)
-       normalized = min(1.0, max(0.0, float(score) / 100))
-      
-       if normalized > 0.95:      # Elite (95-100)
-           return "#00441b"      # Darkest green
-       elif normalized > 0.90:    # Excellent+ (90-95)
-           return "#005a32"      # Very dark green
-       elif normalized > 0.85:    # Excellent (85-90)
-           return "#238b45"      # Dark green
-       elif normalized > 0.80:    # Very good+ (80-85)
-           return "#2d9e4c"      # Medium-dark green
-       elif normalized > 0.75:    # Very good (75-80)
-           return "#41ab5d"      # Medium green
-       elif normalized > 0.70:    # Good+ (70-75)
-           return "#5ab971"      # Medium-light green
-       elif normalized > 0.65:    # Good (65-70)
-           return "#78c679"      # Light green
-       elif normalized > 0.60:    # Above average+ (60-65)
-           return "#97d494"      # Very light green
-       elif normalized > 0.55:    # Above average (55-60)
-           return "#c2e699"      # Pale green
-       elif normalized > 0.50:    # Average+ (50-55)
-           return "#e5f5e0"      # Almost white green
-       elif normalized > 0.45:    # Average (45-50)
-           return "#fff7bc"      # Very pale yellow
-       elif normalized > 0.40:    # Below average+ (40-45)
-           return "#fee08b"      # Light yellow
-       elif normalized > 0.35:    # Below average (35-40)
-           return "#fec44f"      # Dark yellow
-       elif normalized > 0.30:    # Poor+ (30-35)
-           return "#fdae61"      # Light orange
-       elif normalized > 0.25:    # Poor (25-30)
-           return "#f46d43"      # Medium orange
-       elif normalized > 0.20:    # Very poor+ (20-25)
-           return "#e93f3a"      # Light red
-       elif normalized > 0.15:    # Very poor (15-20)
-           return "#d73027"      # Medium red
-       elif normalized > 0.10:    # Awful+ (10-15)
-           return "#bd0026"      # Dark red
-       elif normalized > 0.05:    # Awful (5-10)
-           return "#a50026"      # Very dark red
-       else:                     # Terrible (0-5)
-           return "#800026"      # Extremely dark red  
+        # Check if score is None or NaN
+        if pd.isna(score) or score is None:
+            return "#e2e5e9"  # Light gray for missing values
             
-    # Write player row HTML - fixed width
+        # Normalize score to 0-1 scale where 1 is best (100) and 0 is worst (0)
+        normalized = min(1.0, max(0.0, float(score) / 100))
+        
+        if normalized > 0.90:      # Excellent (90-100)
+            return "#7cb342"      # Muted green
+        elif normalized > 0.80:    # Very good (80-90)
+            return "#8bc34a"      # Lighter muted green
+        elif normalized > 0.70:    # Good (70-80)
+            return "#9ccc65"      # Pale green
+        elif normalized > 0.60:    # Above average (60-70)
+            return "#aed581"      # Very pale green
+        elif normalized > 0.55:    # Slightly above average (55-60)
+            return "#c5e1a5"      # Nearly neutral green
+        elif normalized > 0.45:    # Average (45-55)
+            return "#e0e0e0"      # Neutral gray
+        elif normalized > 0.40:    # Slightly below average (40-45)
+            return "#ffccbc"      # Nearly neutral red
+        elif normalized > 0.30:    # Below average (30-40)
+            return "#ffab91"      # Very pale red
+        elif normalized > 0.20:    # Poor (20-30)
+            return "#ff8a65"      # Pale red
+        elif normalized > 0.10:    # Very poor (10-20)
+            return "#ff7043"      # Light red
+        else:                      # Terrible (0-10)
+            return "#ff5722"      # Muted red
+            
+    # Write player row HTML - fixed width with black bold text
     html = f"""
     <div class="{row_class}">
         <div class="player-cell rank-cell">{player['Rank']}</div>
@@ -970,10 +970,10 @@ def create_player_row(player, expanded, selected_draft):
         <div class="player-cell height-cell">{player['Height']}</div>
         <div class="player-cell class-cell">{player['PlayerClass']}</div>
         <div class="player-cell school-cell">{player['PlayerTeam']}</div>
-        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['NBA'])};">{player['NBA']}</div>
+        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['NBA'])}">{player['NBA']}</div>
         <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['OScore'])};">{player['OScore']}</div>
-        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['DScore'])};">{player['DScore']}</div>
-        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['Score'])};">{player['Score']}</div>
+        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['DScore'])}">{player['DScore']}</div>
+        <div class="stat-cell-ranked" style="background-color: {get_color_for_rank(player['Score'])}">{player['Score']}</div>
     </div>
     """
    
@@ -990,7 +990,6 @@ def create_player_row(player, expanded, selected_draft):
         return html, expanded_html
    
     return html, ""
-
 # Function to handle the expanded details with Streamlit's native components
 def display_expanded_player_details(player):
     # Apply custom CSS to make things more professional
